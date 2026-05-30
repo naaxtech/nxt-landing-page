@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Nav } from "@/components/nav"
 import { HeroSection } from "@/components/sections/hero"
@@ -19,30 +19,40 @@ const LANES = [
     num: "01 / LANE",
     title: "Automation",
     desc: "Remove repetitive work. Let your team focus on decisions, not data entry.",
+    expand: "We map every repetitive task your team runs — emails, data syncs, reporting, approvals — and replace them with automated workflows. If your team does it more than once a week, we automate it.",
+    tags: ["n8n", "Zapier", "Make", "Custom APIs"],
     icon: <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>,
   },
   {
     num: "02 / LANE",
     title: "ERP Systems",
     desc: "Custom operational platforms built for your processes, not against them.",
+    expand: "Off-the-shelf software forces your team to adapt. We build internal tools — inventory, HR, project tracking, finance — mapped to how your business actually runs. All connected, all yours.",
+    tags: ["Supabase", "Custom Dashboards", "API Integrations"],
     icon: <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>,
   },
   {
     num: "03 / LANE",
     title: "AI Systems",
     desc: "Deploy intelligence where it compounds — not where it impresses.",
+    expand: "AI agents, document processing, intelligent routing, and decision automation. We pick the right model for each task and build systems that improve with use — not demos that impress once.",
+    tags: ["Claude", "GPT-4", "LangGraph", "RAG"],
     icon: <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>,
   },
   {
     num: "04 / LANE",
     title: "Infrastructure",
     desc: "Cloud architecture and DevOps that doesn't collapse at 10× your current load.",
+    expand: "We architect for the load you'll have in 12 months — not just today. VPS management, Docker deployments, CI/CD pipelines, database optimization, and uptime monitoring. Built to stay fast.",
+    tags: ["Railway", "Vercel", "Docker", "GitHub Actions"],
     icon: <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/></svg>,
   },
   {
     num: "05 / LANE",
     title: "Growth Systems",
     desc: "CRM, marketing automation, and conversion infrastructure — built to compound.",
+    expand: "Lead capture, nurture sequences, CRM setup, analytics pipelines, and attribution tracking. We build growth infrastructure where every system feeds the next — your pipeline scales without adding headcount.",
+    tags: ["HubSpot", "Klaviyo", "PostHog", "Custom CRM"],
     icon: <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>,
   },
 ]
@@ -71,6 +81,8 @@ const PILLARS = [
 ]
 
 export default function Home() {
+  const [expandedLane, setExpandedLane] = useState<number | null>(null)
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -81,7 +93,7 @@ export default function Home() {
           }
         })
       },
-      { threshold: 0.15 }
+      { threshold: 0.12 }
     )
     document.querySelectorAll(".reveal").forEach((el) => observer.observe(el))
     document.querySelectorAll(".lane-card").forEach((el) => observer.observe(el))
@@ -92,11 +104,8 @@ export default function Home() {
     <>
       <div className="scanline" />
       <div className="grid-overlay" />
-
-      {/* NAV */}
       <Nav />
 
-      {/* HERO */}
       <HeroSection />
 
       {/* PAIN */}
@@ -145,12 +154,28 @@ export default function Home() {
           </div>
 
           <div className="lanes-grid">
-            {LANES.map((lane) => (
-              <div key={lane.num} className="lane-card">
+            {LANES.map((lane, i) => (
+              <div
+                key={lane.num}
+                className={`lane-card${expandedLane === i ? " expanded" : ""}`}
+                onClick={() => setExpandedLane(expandedLane === i ? null : i)}
+              >
                 <div className="lane-num">{lane.num}</div>
                 <div className="lane-icon">{lane.icon}</div>
                 <div className="lane-title">{lane.title}</div>
                 <div className="lane-desc">{lane.desc}</div>
+                <div className="lane-expand">
+                  <div className="lane-expand-inner">
+                    <div className="lane-expand-content">
+                      <p className="lane-expand-body">{lane.expand}</p>
+                      <div className="lane-tags">
+                        {lane.tags.map((t) => (
+                          <span key={t} className="lane-tag">{t}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -211,7 +236,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FOOTER */}
       <footer>
         <Link href="/" className="footer-logo">
           <span className="naax">NAAX</span><span className="tech">TECH</span>

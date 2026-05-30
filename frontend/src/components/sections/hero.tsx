@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 
 const TAGS = [
-  "Technology Execution Partner  ·  Est. Philippines",
+  "Technology Execution Partner  ·  Est. Philippines",
   "Automation · ERP · AI · Infrastructure · Growth",
   "Subscribe to a tech team. Not employees.",
 ]
@@ -38,34 +38,36 @@ export function HeroSection() {
         </svg>
       </div>
 
-      <div
-        className="hero-tag"
-        style={{
-          opacity: tagVisible ? undefined : 0,
-          transform: tagVisible ? undefined : "translateY(8px)",
-          transition: "opacity 0.4s, transform 0.4s",
-        }}
-      >
-        {TAGS[tagIdx]}
-      </div>
+      <div className="hero-main">
+        <div
+          className="hero-tag"
+          style={{
+            opacity: tagVisible ? undefined : 0,
+            transform: tagVisible ? undefined : "translateY(8px)",
+            transition: "opacity 0.4s, transform 0.4s",
+          }}
+        >
+          {TAGS[tagIdx]}
+        </div>
 
-      <h1 className="hero-headline">
-        <span className="hero-line"><span className="hero-line-inner hl-white">BUILD</span></span>
-        <span className="hero-line"><span className="hero-line-inner hl-stroke">SMARTER</span></span>
-        <span className="hero-line"><span className="hero-line-inner hl-yellow">SYSTEMS.</span></span>
-      </h1>
+        <h1 className="hero-headline">
+          <span className="hero-line"><span className="hero-line-inner hl-white">BUILD</span></span>
+          <span className="hero-line"><span className="hero-line-inner hl-stroke">SMARTER</span></span>
+          <span className="hero-line"><span className="hero-line-inner hl-yellow">SYSTEMS.</span></span>
+        </h1>
 
-      <p className="hero-sub">
-        Naaxtech is your <strong>technology execution team</strong> — without the overhead of hiring one.
-        We automate operations, integrate platforms, and build infrastructure <strong>that actually scales</strong>.
-      </p>
+        <p className="hero-sub">
+          Naaxtech is your <strong>technology execution team</strong> — without the overhead of hiring one.
+          We automate operations, integrate platforms, and build infrastructure <strong>that actually scales</strong>.
+        </p>
 
-      <div className="hero-actions">
-        <Link href="#cta" className="btn-primary">Book a Strategy Call</Link>
-        <Link href="#solution" className="btn-ghost">
-          <span>See how it works</span>
-          <span className="arrow" />
-        </Link>
+        <div className="hero-actions">
+          <Link href="#cta" className="btn-primary">Book a Strategy Call</Link>
+          <Link href="#solution" className="btn-ghost">
+            <span>See how it works</span>
+            <span className="arrow" />
+          </Link>
+        </div>
       </div>
 
       <div className="hero-metrics">
