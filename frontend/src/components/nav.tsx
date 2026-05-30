@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { TextScramble } from "@/components/ui/text-scramble"
+import { RippleLink } from "@/components/ui/ripple-link"
 
 const NAV_LINKS = [
   { label: "Services", href: "#solution" },
@@ -40,7 +41,7 @@ export function Nav() {
               </Link>
             </li>
           ))}
-          <li><Link href="mailto:hello@naaxtech.com" className="nav-cta">Book a Call</Link></li>
+          <li><RippleLink href="mailto:hello@naaxtech.com" className="nav-cta">Book a Call</RippleLink></li>
         </ul>
 
         <button

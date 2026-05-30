@@ -6,6 +6,7 @@ import { Nav } from "@/components/nav"
 import { HeroSection } from "@/components/sections/hero"
 import { ProofSection } from "@/components/sections/proof"
 import { TextScramble } from "@/components/ui/text-scramble"
+import { RippleLink } from "@/components/ui/ripple-link"
 
 const PAIN_ITEMS = [
   "Manual processes consuming hours your team doesn't have",
@@ -133,14 +134,7 @@ export default function Home() {
             <div className="reveal">
               <div className="section-label">The Problem</div>
               <h2 className="pain-headline">
-                Your Business Runs on{" "}
-                <TextScramble
-                  text="DIGITAL DUCT TAPE."
-                  textClassName="scramble-heading"
-                  restCharClassName="text-primary"
-                  bare
-                  className="align-middle"
-                />
+                Your Business Runs on <span className="accent">Digital Duct Tape.</span>
               </h2>
               <p className="pain-body">
                 Most companies patch tools together, hire people to manage the gaps, and call it a system.
@@ -166,14 +160,7 @@ export default function Home() {
             <div className="reveal">
               <div className="section-label">How We Help</div>
               <h2 className="solution-headline">
-                We Design Systems That{" "}
-                <TextScramble
-                  text="WORK TOGETHER."
-                  textClassName="scramble-heading"
-                  restCharClassName="text-primary"
-                  bare
-                  className="align-middle"
-                />
+                We Design Systems That <span style={{ color: "var(--yellow)" }}>Work Together.</span>
               </h2>
             </div>
             <div className="reveal reveal-delay-2">
@@ -229,15 +216,7 @@ export default function Home() {
             <div className="reveal">
               <div className="section-label">Why Naaxtech</div>
               <h2 className="why-headline">
-                Technology is Easy.{" "}
-                <TextScramble
-                  text="ADOPTION"
-                  textClassName="scramble-heading"
-                  restCharClassName="text-primary"
-                  bare
-                  className="align-middle"
-                />{" "}
-                is Hard.
+                Technology is Easy. <span className="accent">Adoption</span> is Hard.
               </h2>
               <blockquote className="why-quote">
                 We don&apos;t sell software or marketing plans. We build the full system — tech, growth, and strategy —
@@ -273,7 +252,7 @@ export default function Home() {
               and show you exactly what closing it looks like.
             </p>
             <div className="cta-actions">
-              <Link href="mailto:hello@naaxtech.com" className="btn-primary">Book a Strategy Session</Link>
+              <RippleLink href="mailto:hello@naaxtech.com" className="btn-primary">Book a Strategy Session</RippleLink>
               <Link href="mailto:hello@naaxtech.com" className="btn-ghost">
                 <span>Get a Systems Audit</span>
                 <span className="arrow" />

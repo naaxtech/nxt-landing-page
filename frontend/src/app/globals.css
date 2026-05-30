@@ -134,8 +134,9 @@ nav#navbar.scrolled { border-color: var(--border-bright); }
   letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--black) !important; background: var(--yellow);
   padding: 11px 22px; text-decoration: none;
+  border-radius: 5px;
+  position: relative; overflow: hidden;
   transition: background 0.2s, transform 0.15s !important;
-  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
 }
 .nav-cta::after { display: none !important; }
 .nav-cta:hover { background: #ffe066 !important; transform: translateY(-1px) !important; }
@@ -237,7 +238,8 @@ nav#navbar.scrolled { border-color: var(--border-bright); }
   letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--black); background: var(--yellow);
   padding: 18px 36px; text-decoration: none;
-  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+  border-radius: 6px;
+  position: relative; overflow: hidden;
   transition: background 0.2s, transform 0.15s; display: inline-block;
   white-space: nowrap;
 }
@@ -554,6 +556,10 @@ footer {
 /* ══════════════════════════════════════════
    KEYFRAMES
 ══════════════════════════════════════════ */
+@keyframes btn-ripple {
+  from { transform: scale(0); opacity: 0.6; }
+  to   { transform: scale(1); opacity: 0; }
+}
 @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 @keyframes slideUp { to { transform: translateY(0); } }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }

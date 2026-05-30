@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { TextScramble } from "@/components/ui/text-scramble"
+import { RippleLink } from "@/components/ui/ripple-link"
 
 const TAGS = [
   "Technology · Revenue Marketing · Innovation",
@@ -75,7 +76,7 @@ export function HeroSection() {
         </p>
 
         <div className="hero-actions">
-          <Link href="mailto:hello@naaxtech.com" className="btn-primary">Book a Strategy Call</Link>
+          <RippleLink href="mailto:hello@naaxtech.com" className="btn-primary">Book a Strategy Call</RippleLink>
           <Link href="#solution" className="btn-ghost">
             <span>See how it works</span>
             <span className="arrow" />
