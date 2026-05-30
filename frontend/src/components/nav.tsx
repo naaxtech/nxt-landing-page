@@ -40,7 +40,7 @@ export function Nav() {
               </Link>
             </li>
           ))}
-          <li><Link href="#cta" className="nav-cta">Book a Call</Link></li>
+          <li><Link href="mailto:hello@naaxtech.com" className="nav-cta">Book a Call</Link></li>
         </ul>
 
         <button
@@ -58,7 +58,7 @@ export function Nav() {
             <Link href={link.href} onClick={close}>{link.label}</Link>
           </li>
         ))}
-        <li><Link href="#cta" onClick={close}>Book a Call</Link></li>
+        <li><Link href="mailto:hello@naaxtech.com" onClick={close}>Book a Call</Link></li>
       </ul>
     </>
   )

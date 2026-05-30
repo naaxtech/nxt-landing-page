@@ -62,7 +62,7 @@ export function HeroSection() {
         </p>
 
         <div className="hero-actions">
-          <Link href="#cta" className="btn-primary">Book a Strategy Call</Link>
+          <Link href="mailto:hello@naaxtech.com" className="btn-primary">Book a Strategy Call</Link>
           <Link href="#solution" className="btn-ghost">
             <span>See how it works</span>
             <span className="arrow" />

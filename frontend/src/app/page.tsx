@@ -158,6 +158,7 @@ export default function Home() {
               <div
                 key={lane.num}
                 className={`lane-card${expandedLane === i ? " expanded" : ""}`}
+                onMouseEnter={() => setExpandedLane(i)}
                 onClick={() => setExpandedLane(expandedLane === i ? null : i)}
               >
                 <div className="lane-num">{lane.num}</div>
@@ -226,8 +227,8 @@ export default function Home() {
               One conversation. We&apos;ll map your biggest operational drag and show you what a fix looks like — no pitch, no fluff.
             </p>
             <div className="cta-actions">
-              <Link href="#" className="btn-primary">Book a Strategy Session</Link>
-              <Link href="#" className="btn-ghost">
+              <Link href="mailto:hello@naaxtech.com" className="btn-primary">Book a Strategy Session</Link>
+              <Link href="mailto:hello@naaxtech.com" className="btn-ghost">
                 <span>Get a Systems Audit</span>
                 <span className="arrow" />
               </Link>
