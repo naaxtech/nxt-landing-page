@@ -35,6 +35,7 @@ jobs:
         working-directory: frontend
         env:
           NEXT_PUBLIC_BASE_PATH: /nxt-landing-page
+          NEXT_PUBLIC_API_URL: ${{ secrets.API_URL }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

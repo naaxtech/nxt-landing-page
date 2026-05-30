@@ -5,14 +5,11 @@ import Link from "next/link"
 import { Nav } from "@/components/nav"
 import { RippleLink } from "@/components/ui/ripple-link"
 
-// ─── Set NEXT_PUBLIC_FORMSPREE_ID in your environment ───────────────────────
-// 1. Go to formspree.io → create a free account → New Form
-// 2. Set notification email: naaxtech.official@gmail.com
-//    (add naaxtech.marketing@gmail.com as CC in Form Settings → Notifications)
-// 3. Copy your Form ID and set NEXT_PUBLIC_FORMSPREE_ID=your_id
-//    in GitHub repo → Settings → Secrets → Actions → New repository secret
-//    then redeploy. Until then the form shows a setup message.
-const FORMSPREE_ID = process.env.NEXT_PUBLIC_FORMSPREE_ID
+// ─── Self-hosted contact API (deployed on Coolify) ──────────────────────────
+// Add NEXT_PUBLIC_API_URL as a GitHub secret (repo → Settings → Secrets → Actions)
+// Value = your Coolify service URL, e.g. https://api.yourdomain.com
+// Then redeploy. Until configured, the form shows a mailto: fallback.
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 const TIERS = [
   {
@@ -116,23 +113,19 @@ export default function PartnerPage() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!FORMSPREE_ID) return
+    if (!API_URL) return
 
     setStatus("sending")
-    const form = e.currentTarget
-    const data = Object.fromEntries(new FormData(form))
+    const data = Object.fromEntries(new FormData(e.currentTarget))
 
     try {
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      const res = await fetch(`${API_URL}/contact`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          ...data,
-          _subject: `Partnership Inquiry — ${data.name} | ${data.company}`,
-          _cc: "naaxtech.marketing@gmail.com",
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
       })
-      setStatus(res.ok ? "sent" : "error")
+      const json = await res.json()
+      setStatus(json.ok ? "sent" : "error")
     } catch {
       setStatus("error")
     }
@@ -430,12 +423,12 @@ export default function PartnerPage() {
                   no automated replies, no sales team.
                 </p>
               </div>
-            ) : !FORMSPREE_ID ? (
+            ) : !API_URL ? (
               <div style={{ textAlign: "center", padding: "48px 24px" }}>
                 <p style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.1em", color: "var(--yellow)", textTransform: "uppercase", marginBottom: 16 }}>Form Setup Required</p>
                 <p style={{ color: "var(--gray)", fontSize: 14, lineHeight: 1.7 }}>
                   Set <code style={{ color: "var(--white)", background: "var(--surface)", padding: "2px 6px" }}>NEXT_PUBLIC_FORMSPREE_ID</code> in your environment
-                  to activate this form. See comment in <code style={{ color: "var(--white)", background: "var(--surface)", padding: "2px 6px" }}>partner/page.tsx</code> for setup instructions.
+                  to activate this form. Deploy <code style={{ color: "var(--white)", background: "var(--surface)", padding: "2px 6px" }}>api/</code> on Coolify and set the secret.
                 </p>
                 <div style={{ marginTop: 24 }}>
                   <a href="mailto:hello@naaxtech.com?subject=Partnership Inquiry" className="btn-primary" style={{ textDecoration: "none" }}>
