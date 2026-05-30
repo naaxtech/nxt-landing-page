@@ -45,10 +45,24 @@ body {
   background: var(--black);
   color: var(--white);
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+}
+
+/* ── Heading scramble helper classes ── */
+.scramble-heading {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+.hero-stroke-char {
+  -webkit-text-stroke: 2px var(--white);
+  color: transparent;
 }
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: var(--black); }
@@ -102,7 +116,7 @@ nav#navbar.scrolled { border-color: var(--border-bright); }
   display: flex; align-items: center; gap: 40px; list-style: none;
 }
 .nav-links a {
-  font-family: var(--font-mono); font-size: 11px;
+  font-family: var(--font-mono); font-size: 13px;
   letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--gray); text-decoration: none;
   transition: color 0.2s; position: relative;
@@ -116,10 +130,10 @@ nav#navbar.scrolled { border-color: var(--border-bright); }
 .nav-links a:hover::after { width: 100%; }
 
 .nav-cta {
-  font-family: var(--font-mono); font-size: 11px;
+  font-family: var(--font-mono); font-size: 13px;
   letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--black) !important; background: var(--yellow);
-  padding: 10px 20px; text-decoration: none;
+  padding: 11px 22px; text-decoration: none;
   transition: background 0.2s, transform 0.15s !important;
   clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
 }
@@ -219,10 +233,10 @@ nav#navbar.scrolled { border-color: var(--border-bright); }
 }
 
 .btn-primary {
-  font-family: var(--font-mono); font-size: 12px;
+  font-family: var(--font-mono); font-size: 13px;
   letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--black); background: var(--yellow);
-  padding: 16px 32px; text-decoration: none;
+  padding: 18px 36px; text-decoration: none;
   clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
   transition: background 0.2s, transform 0.15s; display: inline-block;
   white-space: nowrap;
@@ -230,7 +244,7 @@ nav#navbar.scrolled { border-color: var(--border-bright); }
 .btn-primary:hover { background: #ffe066; transform: translateY(-2px); }
 
 .btn-ghost {
-  font-family: var(--font-mono); font-size: 12px;
+  font-family: var(--font-mono); font-size: 13px;
   letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--gray); text-decoration: none;
   display: flex; align-items: center; gap: 8px; transition: color 0.2s;

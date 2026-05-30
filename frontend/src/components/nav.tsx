@@ -35,7 +35,7 @@ export function Nav() {
               <Link href={link.href}>
                 <TextScramble
                   text={link.label.toUpperCase()}
-                  textClassName="font-mono text-[11px] tracking-[0.1em] uppercase"
+                  textClassName="font-mono text-[13px] tracking-[0.1em] uppercase"
                 />
               </Link>
             </li>

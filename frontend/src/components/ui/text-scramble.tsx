@@ -8,9 +8,17 @@ interface TextScrambleProps {
   text: string
   className?: string
   textClassName?: string
+  restCharClassName?: string  // class for non-scrambling chars (default: "text-foreground")
+  bare?: boolean              // suppress underline + glow — use when inline inside headings
 }
 
-export function TextScramble({ text, className = "", textClassName = "font-mono text-lg tracking-widest uppercase" }: TextScrambleProps) {
+export function TextScramble({
+  text,
+  className = "",
+  textClassName = "font-mono text-lg tracking-widest uppercase",
+  restCharClassName = "text-foreground",
+  bare = false,
+}: TextScrambleProps) {
   const [displayText, setDisplayText] = useState(text)
   const [isHovering, setIsHovering] = useState(false)
   const [isScrambling, setIsScrambling] = useState(false)
@@ -75,33 +83,33 @@ export function TextScramble({ text, className = "", textClassName = "font-mono 
           <span
             key={i}
             className={`inline-block transition-all duration-150 ${
-              isScrambling && char !== text[i] ? "text-primary scale-110" : "text-foreground"
+              isScrambling && char !== text[i] ? "text-primary scale-110" : restCharClassName
             }`}
-            style={{
-              transitionDelay: `${i * 10}ms`,
-            }}
+            style={{ transitionDelay: `${i * 10}ms` }}
           >
             {char}
           </span>
         ))}
       </span>
 
-      {/* Animated underline */}
-      <span className="relative h-px w-full mt-2 overflow-hidden">
+      {!bare && (
+        <span className="relative h-px w-full mt-2 overflow-hidden">
+          <span
+            className={`absolute inset-0 bg-foreground transition-transform duration-500 ease-out origin-left ${
+              isHovering ? "scale-x-100" : "scale-x-0"
+            }`}
+          />
+          <span className="absolute inset-0 bg-border" />
+        </span>
+      )}
+
+      {!bare && (
         <span
-          className={`absolute inset-0 bg-foreground transition-transform duration-500 ease-out origin-left ${
-            isHovering ? "scale-x-100" : "scale-x-0"
+          className={`absolute -inset-4 rounded-lg bg-primary/5 transition-opacity duration-300 -z-10 ${
+            isHovering ? "opacity-100" : "opacity-0"
           }`}
         />
-        <span className="absolute inset-0 bg-border" />
-      </span>
-
-      {/* Subtle glow on hover */}
-      <span
-        className={`absolute -inset-4 rounded-lg bg-primary/5 transition-opacity duration-300 -z-10 ${
-          isHovering ? "opacity-100" : "opacity-0"
-        }`}
-      />
+      )}
     </div>
   )
 }

@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { TextScramble } from "@/components/ui/text-scramble"
 
 const TAGS = [
-  "Technology Execution Partner  ·  Est. Philippines",
-  "Automation · ERP · AI · Infrastructure · Growth",
-  "Subscribe to a tech team. Not employees.",
+  "Technology · Revenue Marketing · Innovation",
+  "Systems that run it. Growth that compounds it.",
+  "Subscribe to a team that builds and grows — not just delivers.",
 ]
 
 export function HeroSection() {
@@ -51,14 +52,26 @@ export function HeroSection() {
         </div>
 
         <h1 className="hero-headline">
-          <span className="hero-line"><span className="hero-line-inner hl-white">BUILD</span></span>
-          <span className="hero-line"><span className="hero-line-inner hl-stroke">SMARTER</span></span>
-          <span className="hero-line"><span className="hero-line-inner hl-yellow">SYSTEMS.</span></span>
+          <span className="hero-line">
+            <span className="hero-line-inner">
+              <TextScramble text="BUILD" textClassName="scramble-heading" restCharClassName="text-white" bare />
+            </span>
+          </span>
+          <span className="hero-line">
+            <span className="hero-line-inner">
+              <TextScramble text="SMARTER" textClassName="scramble-heading" restCharClassName="hero-stroke-char" bare />
+            </span>
+          </span>
+          <span className="hero-line">
+            <span className="hero-line-inner">
+              <TextScramble text="SYSTEMS." textClassName="scramble-heading" restCharClassName="text-primary" bare />
+            </span>
+          </span>
         </h1>
 
         <p className="hero-sub">
           Naaxtech is your <strong>technology execution team</strong> — without the overhead of hiring one.
-          We automate operations, integrate platforms, and build infrastructure <strong>that actually scales</strong>.
+          We build the systems, drive the growth, and execute the strategy <strong>that makes your business compound</strong>.
         </p>
 
         <div className="hero-actions">
@@ -87,8 +100,8 @@ export function HeroSection() {
         </div>
         <div className="metric-divider" />
         <div className="metric-item">
-          <div className="metric-num">0<span>x</span> Agency</div>
-          <div className="metric-label">We&apos;re your tech partner</div>
+          <div className="metric-num">1<span>x</span> Partner</div>
+          <div className="metric-label">Built-in, not bolted on</div>
         </div>
       </div>
     </section>

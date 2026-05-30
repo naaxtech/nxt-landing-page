@@ -5,13 +5,14 @@ import Link from "next/link"
 import { Nav } from "@/components/nav"
 import { HeroSection } from "@/components/sections/hero"
 import { ProofSection } from "@/components/sections/proof"
+import { TextScramble } from "@/components/ui/text-scramble"
 
 const PAIN_ITEMS = [
   "Manual processes consuming hours your team doesn't have",
-  "Disconnected tools that don't speak to each other",
-  "Software you're paying for but no one fully uses",
+  "Marketing spend with no clear line back to revenue",
+  "Disconnected ops and marketing — systems that can't talk to each other",
   "Operations that break down exactly when you scale",
-  "No internal tech lead — and no budget to hire one full-time",
+  "No one person who understands both the technology and the growth",
 ]
 
 const LANES = [
@@ -49,10 +50,10 @@ const LANES = [
   },
   {
     num: "05 / LANE",
-    title: "Growth Systems",
-    desc: "CRM, marketing automation, and conversion infrastructure — built to compound.",
-    expand: "Lead capture, nurture sequences, CRM setup, analytics pipelines, and attribution tracking. We build growth infrastructure where every system feeds the next — your pipeline scales without adding headcount.",
-    tags: ["HubSpot", "Klaviyo", "PostHog", "Custom CRM"],
+    title: "Revenue Marketing",
+    desc: "Marketing that's built by engineers, not bolted on by marketers. Funnels, attribution, and retention infrastructure that compounds.",
+    expand: "We build the systems that turn traffic into revenue — SEO infrastructure, conversion funnels, email automation, attribution pipelines, and retention sequences. Marketing strategy applied through tech, not guesswork. Every campaign has a system behind it.",
+    tags: ["SEO Infrastructure", "Conversion Funnels", "Email Automation", "Attribution"],
     icon: <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>,
   },
 ]
@@ -71,7 +72,7 @@ const PILLARS = [
   {
     tag: "Control",
     title: "You Own the Outcomes",
-    desc: "You own your data, your content, your accounts. Naaxtech owns the automation engine. When you grow, the system grows with you.",
+    desc: "You own your data, your content, your accounts. Naaxtech owns the execution engine. When you grow, the system grows with you.",
   },
   {
     tag: "Scale",
@@ -85,8 +86,6 @@ export default function Home() {
   const [visibleLanes, setVisibleLanes] = useState<boolean[]>(Array(LANES.length).fill(false))
   const laneRefs = useRef<(HTMLDivElement | null)[]>([])
 
-  // Reveal observer for .reveal elements (classList mutation is safe — those elements'
-  // classNames are static strings not controlled by React state)
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -100,7 +99,6 @@ export default function Home() {
     return () => observer.disconnect()
   }, [])
 
-  // Lane visibility tracked in React state so it survives re-renders from expandedLane changes
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -135,7 +133,14 @@ export default function Home() {
             <div className="reveal">
               <div className="section-label">The Problem</div>
               <h2 className="pain-headline">
-                Your Business Runs on <span className="accent">Digital Duct Tape.</span>
+                Your Business Runs on{" "}
+                <TextScramble
+                  text="DIGITAL DUCT TAPE."
+                  textClassName="scramble-heading"
+                  restCharClassName="text-primary"
+                  bare
+                  className="align-middle"
+                />
               </h2>
               <p className="pain-body">
                 Most companies patch tools together, hire people to manage the gaps, and call it a system.
@@ -161,14 +166,20 @@ export default function Home() {
             <div className="reveal">
               <div className="section-label">How We Help</div>
               <h2 className="solution-headline">
-                We Design Systems That <span style={{ color: "var(--yellow)" }}>Work Together.</span>
+                We Design Systems That{" "}
+                <TextScramble
+                  text="WORK TOGETHER."
+                  textClassName="scramble-heading"
+                  restCharClassName="text-primary"
+                  bare
+                  className="align-middle"
+                />
               </h2>
             </div>
             <div className="reveal reveal-delay-2">
               <p className="solution-desc">
-                Subscribe to a technology execution team instead of hiring employees.{" "}
-                <strong>One flat rate. Five execution lanes. Zero overhead.</strong>{" "}
-                We sit between your business goals and the technical stack that delivers them.
+                Subscribe to a team that builds systems, drives growth, and executes strategy — under one partnership.{" "}
+                <strong>No agencies. No fragmented freelancers. No gaps between your tech and your revenue.</strong>
               </p>
             </div>
           </div>
@@ -218,12 +229,21 @@ export default function Home() {
             <div className="reveal">
               <div className="section-label">Why Naaxtech</div>
               <h2 className="why-headline">
-                Technology is Easy. <span className="accent">Adoption</span> is Hard.
+                Technology is Easy.{" "}
+                <TextScramble
+                  text="ADOPTION"
+                  textClassName="scramble-heading"
+                  restCharClassName="text-primary"
+                  bare
+                  className="align-middle"
+                />{" "}
+                is Hard.
               </h2>
               <blockquote className="why-quote">
-                We don&apos;t sell you software. We build the system that makes your business run — and we stay until it does.
+                We don&apos;t sell software or marketing plans. We build the full system — tech, growth, and strategy —
+                that makes your business compound.
                 <br /><br />
-                <strong>Most tech companies talk about themselves. We track your outcomes.</strong>
+                <strong>Most partners talk about themselves. We track your outcomes.</strong>
               </blockquote>
             </div>
             <div className="why-pillars reveal reveal-delay-2">
@@ -247,9 +267,10 @@ export default function Home() {
         <div className="section-inner" style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
           <div className="reveal">
             <div className="cta-label">Ready to fix this?</div>
-            <h2 className="cta-headline">Let&apos;s Remove the Bottlenecks Slowing You Down.</h2>
+            <h2 className="cta-headline">Let&apos;s Build What Actually Grows You.</h2>
             <p className="cta-sub">
-              One conversation. We&apos;ll map your biggest operational drag and show you what a fix looks like — no pitch, no fluff.
+              One conversation. We&apos;ll map your biggest gap — in operations, growth, or strategy —
+              and show you exactly what closing it looks like.
             </p>
             <div className="cta-actions">
               <Link href="mailto:hello@naaxtech.com" className="btn-primary">Book a Strategy Session</Link>
@@ -266,7 +287,7 @@ export default function Home() {
         <Link href="/" className="footer-logo">
           <span className="naax">NAAX</span><span className="tech">TECH</span>
         </Link>
-        <span className="footer-copy">© 2025 Naaxtech. Technology Execution Partner.</span>
+        <span className="footer-copy">© 2025 Naaxtech. Technology · Marketing · Innovation.</span>
         <ul className="footer-links">
           <li><Link href="#">Services</Link></li>
           <li><Link href="#">Systems</Link></li>
