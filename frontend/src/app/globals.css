@@ -134,7 +134,7 @@ nav#navbar.scrolled { border-color: var(--border-bright); }
   letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--black) !important; background: var(--yellow);
   padding: 11px 22px; text-decoration: none;
-  border-radius: 5px;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
   position: relative; overflow: hidden;
   transition: background 0.2s, transform 0.15s !important;
 }
@@ -238,7 +238,7 @@ nav#navbar.scrolled { border-color: var(--border-bright); }
   letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--black); background: var(--yellow);
   padding: 18px 36px; text-decoration: none;
-  border-radius: 6px;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
   position: relative; overflow: hidden;
   transition: background 0.2s, transform 0.15s; display: inline-block;
   white-space: nowrap;
@@ -556,9 +556,22 @@ footer {
 /* ══════════════════════════════════════════
    KEYFRAMES
 ══════════════════════════════════════════ */
-@keyframes btn-ripple {
-  from { transform: scale(0); opacity: 0.6; }
-  to   { transform: scale(1); opacity: 0; }
+/* Button sweep — diagonal light scan on click */
+.btn-sweep-el {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 80%
+  );
+  pointer-events: none;
+  animation: btn-sweep 0.48s ease-in-out forwards;
+}
+@keyframes btn-sweep {
+  from { transform: translateX(-120%); }
+  to   { transform: translateX(120%); }
 }
 @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 @keyframes slideUp { to { transform: translateY(0); } }
