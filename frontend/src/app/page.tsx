@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { Nav } from "@/components/nav"
 import { HeroSection } from "@/components/sections/hero"
@@ -82,21 +82,41 @@ const PILLARS = [
 
 export default function Home() {
   const [expandedLane, setExpandedLane] = useState<number | null>(null)
+  const [visibleLanes, setVisibleLanes] = useState<boolean[]>(Array(LANES.length).fill(false))
+  const laneRefs = useRef<(HTMLDivElement | null)[]>([])
 
+  // Reveal observer for .reveal elements (classList mutation is safe — those elements'
+  // classNames are static strings not controlled by React state)
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((el) => {
-          if (el.isIntersecting) {
-            el.target.classList.add("visible")
-            observer.unobserve(el.target)
-          }
+          if (el.isIntersecting) { el.target.classList.add("visible"); observer.unobserve(el.target) }
         })
       },
       { threshold: 0.12 }
     )
     document.querySelectorAll(".reveal").forEach((el) => observer.observe(el))
-    document.querySelectorAll(".lane-card").forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [])
+
+  // Lane visibility tracked in React state so it survives re-renders from expandedLane changes
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = laneRefs.current.indexOf(entry.target as HTMLDivElement)
+            if (idx !== -1) {
+              setVisibleLanes((prev) => { const next = [...prev]; next[idx] = true; return next })
+              observer.unobserve(entry.target)
+            }
+          }
+        })
+      },
+      { threshold: 0.12 }
+    )
+    laneRefs.current.forEach((el) => { if (el) observer.observe(el) })
     return () => observer.disconnect()
   }, [])
 
@@ -157,7 +177,12 @@ export default function Home() {
             {LANES.map((lane, i) => (
               <div
                 key={lane.num}
-                className={`lane-card${expandedLane === i ? " expanded" : ""}`}
+                ref={(el) => { laneRefs.current[i] = el }}
+                className={[
+                  "lane-card",
+                  visibleLanes[i] ? "visible" : "",
+                  expandedLane === i ? "expanded" : "",
+                ].filter(Boolean).join(" ")}
                 onMouseEnter={() => setExpandedLane(i)}
                 onClick={() => setExpandedLane(expandedLane === i ? null : i)}
               >
