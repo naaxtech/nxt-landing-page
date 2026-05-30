@@ -2,6 +2,7 @@
 
 import { useEffect } from "react"
 import Link from "next/link"
+import { Nav } from "@/components/nav"
 import { HeroSection } from "@/components/sections/hero"
 import { ProofSection } from "@/components/sections/proof"
 
@@ -93,17 +94,7 @@ export default function Home() {
       <div className="grid-overlay" />
 
       {/* NAV */}
-      <nav id="navbar">
-        <Link href="/" className="nav-logo">
-          <span className="naax">NAAX</span><span className="tech">TECH</span>
-        </Link>
-        <ul className="nav-links">
-          <li><Link href="#solution">Services</Link></li>
-          <li><Link href="#proof">Systems</Link></li>
-          <li><Link href="#why">Why Us</Link></li>
-          <li><Link href="#cta" className="nav-cta">Book a Call</Link></li>
-        </ul>
-      </nav>
+      <Nav />
 
       {/* HERO */}
       <HeroSection />

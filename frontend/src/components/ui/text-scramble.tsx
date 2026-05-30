@@ -7,9 +7,10 @@ const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*"
 interface TextScrambleProps {
   text: string
   className?: string
+  textClassName?: string
 }
 
-export function TextScramble({ text, className = "" }: TextScrambleProps) {
+export function TextScramble({ text, className = "", textClassName = "font-mono text-lg tracking-widest uppercase" }: TextScrambleProps) {
   const [displayText, setDisplayText] = useState(text)
   const [isHovering, setIsHovering] = useState(false)
   const [isScrambling, setIsScrambling] = useState(false)
@@ -69,7 +70,7 @@ export function TextScramble({ text, className = "" }: TextScrambleProps) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <span className="relative font-mono text-lg tracking-widest uppercase">
+      <span className={`relative ${textClassName}`}>
         {displayText.split("").map((char, i) => (
           <span
             key={i}
