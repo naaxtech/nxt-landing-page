@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 
 const TAGS = [
-  "Technology Execution Partner · Est. Philippines",
+  "Technology Execution Partner  ·  Est. Philippines",
   "Automation · ERP · AI · Infrastructure · Growth",
   "Subscribe to a tech team. Not employees.",
 ]
@@ -25,86 +25,69 @@ export function HeroSection() {
   }, [])
 
   return (
-    <section id="hero" className="relative min-h-screen flex flex-col justify-center px-12 pt-32 pb-20 z-10 overflow-hidden">
-      {/* Corner brackets */}
-      <div className="absolute inset-6 pointer-events-none" aria-hidden="true">
-        <svg className="absolute top-0 left-0 w-24 h-24 opacity-60" viewBox="0 0 80 80" fill="none">
-          <path d="M20 0 L0 0 L0 20" stroke="#F5C842" strokeWidth="1"/>
-          <path d="M60 0 L80 0 L80 20" stroke="#F5C842" strokeWidth="1"/>
-          <path d="M20 80 L0 80 L0 60" stroke="#F5C842" strokeWidth="1"/>
-          <path d="M60 80 L80 80 L80 60" stroke="#F5C842" strokeWidth="1"/>
+    <section id="hero">
+      <div className="corner-bracket" aria-hidden="true">
+        <svg viewBox="0 0 200 200" fill="none">
+          <path d="M40 0 L0 0 L0 40" stroke="#F5C842" strokeWidth="1" opacity="0.6"/>
+          <path d="M160 0 L200 0 L200 40" stroke="#F5C842" strokeWidth="1" opacity="0.6"/>
+          <path d="M40 200 L0 200 L0 160" stroke="#F5C842" strokeWidth="1" opacity="0.6"/>
+          <path d="M160 200 L200 200 L200 160" stroke="#F5C842" strokeWidth="1" opacity="0.6"/>
+          <circle cx="100" cy="100" r="40" stroke="rgba(245,200,66,0.15)" strokeWidth="0.5" strokeDasharray="4 4"/>
+          <circle cx="100" cy="100" r="70" stroke="rgba(245,200,66,0.07)" strokeWidth="0.5" strokeDasharray="2 6"/>
+          <circle cx="100" cy="100" r="4" fill="#F5C842" opacity="0.8"/>
         </svg>
       </div>
 
-      {/* Hero tag */}
       <div
-        className="font-mono text-[11px] tracking-[0.18em] text-primary uppercase mb-8 flex items-center gap-3 transition-all duration-300"
-        style={{ opacity: tagVisible ? 1 : 0, transform: tagVisible ? "translateY(0)" : "translateY(8px)" }}
+        className="hero-tag"
+        style={{
+          opacity: tagVisible ? undefined : 0,
+          transform: tagVisible ? undefined : "translateY(8px)",
+          transition: "opacity 0.4s, transform 0.4s",
+        }}
       >
-        <span className="block w-8 h-px bg-primary shrink-0" />
         {TAGS[tagIdx]}
       </div>
 
-      {/* Headline */}
-      <h1 className="font-sans font-black leading-[0.92] tracking-[-0.02em] uppercase max-w-4xl mb-8"
-          style={{ fontSize: "clamp(64px, 10vw, 120px)" }}>
-        <span className="block overflow-hidden">
-          <span className="block animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            BUILD
-          </span>
-        </span>
-        <span className="block overflow-hidden">
-          <span className="block animate-slide-up hero-stroke" style={{ animationDelay: "0.2s" }}>
-            SMARTER
-          </span>
-        </span>
-        <span className="block overflow-hidden">
-          <span className="block animate-slide-up text-primary" style={{ animationDelay: "0.3s" }}>
-            SYSTEMS.
-          </span>
-        </span>
+      <h1 className="hero-headline">
+        <span className="hero-line"><span className="hero-line-inner hl-white">BUILD</span></span>
+        <span className="hero-line"><span className="hero-line-inner hl-stroke">SMARTER</span></span>
+        <span className="hero-line"><span className="hero-line-inner hl-yellow">SYSTEMS.</span></span>
       </h1>
 
-      {/* Subtext */}
-      <p className="max-w-xl text-base text-white/60 leading-relaxed mb-10 animate-fade-up" style={{ animationDelay: "0.5s" }}>
-        Naaxtech is your <strong className="text-white">technology execution team</strong> — without the overhead of hiring one.
-        We automate operations, integrate platforms, and build infrastructure{" "}
-        <strong className="text-white">that actually scales</strong>.
+      <p className="hero-sub">
+        Naaxtech is your <strong>technology execution team</strong> — without the overhead of hiring one.
+        We automate operations, integrate platforms, and build infrastructure <strong>that actually scales</strong>.
       </p>
 
-      {/* Actions */}
-      <div className="flex items-center gap-5 mb-20 animate-fade-up" style={{ animationDelay: "0.65s" }}>
-        <Link
-          href="#cta"
-          className="inline-flex items-center px-6 py-3 bg-primary text-black font-mono text-[11px] font-bold tracking-[0.12em] uppercase hover:bg-primary/90 transition-colors"
-          style={{ clipPath: "polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%)" }}
-        >
-          Book a Strategy Call
-        </Link>
-        <Link href="#solution" className="flex items-center gap-2 font-mono text-[11px] tracking-[0.1em] uppercase text-white/50 hover:text-white transition-colors group">
+      <div className="hero-actions">
+        <Link href="#cta" className="btn-primary">Book a Strategy Call</Link>
+        <Link href="#solution" className="btn-ghost">
           <span>See how it works</span>
-          <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
+          <span className="arrow" />
         </Link>
       </div>
 
-      {/* Metrics strip */}
-      <div className="flex items-center gap-0 border-t border-border pt-8 animate-fade-up" style={{ animationDelay: "0.75s" }}>
-        {[
-          { num: "5", unit: "", label: "Execution disciplines", suffix: " Lanes" },
-          { num: "1", unit: "x", label: "Subscription model", suffix: " Flat Rate" },
-          { num: "∞", unit: "", label: "Built for growth", suffix: " Scale" },
-          { num: "0", unit: "x", label: "We're your tech partner", suffix: " Agency" },
-        ].map((m, i) => (
-          <div key={i} className="flex items-center">
-            {i > 0 && <div className="w-px h-8 bg-border mx-8 shrink-0" />}
-            <div>
-              <div className="font-mono text-xl font-bold text-white">
-                <span className="text-primary">{m.num}</span>{m.unit}{m.suffix}
-              </div>
-              <div className="font-mono text-[10px] tracking-widest uppercase text-white/40 mt-0.5">{m.label}</div>
-            </div>
-          </div>
-        ))}
+      <div className="hero-metrics">
+        <div className="metric-item">
+          <div className="metric-num"><span>5</span> Lanes</div>
+          <div className="metric-label">Execution disciplines</div>
+        </div>
+        <div className="metric-divider" />
+        <div className="metric-item">
+          <div className="metric-num">1<span>x</span> Flat Rate</div>
+          <div className="metric-label">Subscription model</div>
+        </div>
+        <div className="metric-divider" />
+        <div className="metric-item">
+          <div className="metric-num"><span>∞</span> Scale</div>
+          <div className="metric-label">Built for growth</div>
+        </div>
+        <div className="metric-divider" />
+        <div className="metric-item">
+          <div className="metric-num">0<span>x</span> Agency</div>
+          <div className="metric-label">We&apos;re your tech partner</div>
+        </div>
       </div>
     </section>
   )
