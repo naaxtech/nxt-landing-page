@@ -76,7 +76,7 @@ export function HeroSection() {
         </p>
 
         <div className="hero-actions">
-          <RippleLink href="mailto:hello@naaxtech.com" className="btn-primary">Book a Strategy Call</RippleLink>
+          <RippleLink href="/partner" className="btn-primary">Become a Partner</RippleLink>
           <Link href="#solution" className="btn-ghost">
             <span>See how it works</span>
             <span className="arrow" />

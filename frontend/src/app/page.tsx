@@ -252,7 +252,7 @@ export default function Home() {
               and show you exactly what closing it looks like.
             </p>
             <div className="cta-actions">
-              <RippleLink href="mailto:hello@naaxtech.com" className="btn-primary">Book a Strategy Session</RippleLink>
+              <RippleLink href="/partner" className="btn-primary">Become a Partner</RippleLink>
               <Link href="mailto:hello@naaxtech.com" className="btn-ghost">
                 <span>Get a Systems Audit</span>
                 <span className="arrow" />
