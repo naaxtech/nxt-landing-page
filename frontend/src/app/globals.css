@@ -195,6 +195,15 @@ nav#navbar.scrolled { border-color: var(--border-bright); }
 }
 .nav-mobile li a:hover { color: var(--white); }
 .nav-mobile li:last-child a { border-bottom: none; color: var(--yellow); }
+.nav-mobile-cta {
+  display: block; padding: 14px 0 !important;
+  margin-top: 4px;
+  color: var(--black) !important;
+  background: var(--yellow);
+  text-align: center;
+  border-bottom: none !important;
+}
+.nav-mobile-cta:hover { background: #ffe066; color: var(--black) !important; }
 
 /* ══════════════════════════════════════════
    HERO

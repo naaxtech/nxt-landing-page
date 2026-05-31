@@ -64,11 +64,11 @@ export function Nav() {
       <ul className={`nav-mobile${mobileOpen ? " open" : ""}`}>
         {NAV_LINKS.map((link) => (
           <li key={link.href}>
-            <a href={link.href} onClick={close}>{link.label}</a>
+            <Link href={link.href} onClick={close}>{link.label}</Link>
           </li>
         ))}
         <li><Link href="/lab/" onClick={close}>The Lab</Link></li>
-        <li><Link href="/partner/" onClick={close}>Partner With Us</Link></li>
+        <li><Link href="/partner/" className="nav-mobile-cta" onClick={close}>Partner With Us</Link></li>
         <li>
           <a href="https://www.linkedin.com/company/naaxtech/" target="_blank" rel="noopener noreferrer" onClick={close}>
             LinkedIn
