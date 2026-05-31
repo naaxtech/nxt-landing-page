@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { TextScramble } from "@/components/ui/text-scramble"
 import { RippleLink } from "@/components/ui/ripple-link"
-import { RevenueEngineeringVortex } from "@/components/ui/revenue-engineering-vortex"
 
 const TAGS = [
   "Technology · Revenue Marketing · Innovation",
@@ -15,7 +14,6 @@ const TAGS = [
 export function HeroSection() {
   const [tagIdx, setTagIdx] = useState(0)
   const [tagVisible, setTagVisible] = useState(true)
-  const [vortexEnabled, setVortexEnabled] = useState(true)
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -28,25 +26,19 @@ export function HeroSection() {
     return () => clearInterval(id)
   }, [])
 
-  useEffect(() => {
-    const media = window.matchMedia("(max-width: 900px)")
-    const apply = () => setVortexEnabled(!media.matches)
-    apply()
-    media.addEventListener("change", apply)
-    return () => media.removeEventListener("change", apply)
-  }, [])
-
   return (
     <section id="hero">
-      <RevenueEngineeringVortex
-        enabled={vortexEnabled}
-        text="REVENUE ENGINEERING"
-        accentColor="#F5C842"
-        dimColor="rgba(230, 230, 230, 0.42)"
-        cellSize={12}
-        density={0.56}
-        followStrength={0.06}
-      />
+      <div className="corner-bracket" aria-hidden="true">
+        <svg viewBox="0 0 200 200" fill="none">
+          <path d="M40 0 L0 0 L0 40" stroke="#F5C842" strokeWidth="1" opacity="0.6" />
+          <path d="M160 0 L200 0 L200 40" stroke="#F5C842" strokeWidth="1" opacity="0.6" />
+          <path d="M40 200 L0 200 L0 160" stroke="#F5C842" strokeWidth="1" opacity="0.6" />
+          <path d="M160 200 L200 200 L200 160" stroke="#F5C842" strokeWidth="1" opacity="0.6" />
+          <circle cx="100" cy="100" r="40" stroke="rgba(245,200,66,0.15)" strokeWidth="0.5" strokeDasharray="4 4" />
+          <circle cx="100" cy="100" r="70" stroke="rgba(245,200,66,0.07)" strokeWidth="0.5" strokeDasharray="2 6" />
+          <circle cx="100" cy="100" r="4" fill="#F5C842" opacity="0.8" />
+        </svg>
+      </div>
 
       <div className="hero-main">
         <div
