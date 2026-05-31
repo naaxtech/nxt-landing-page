@@ -6,9 +6,9 @@ import { TextScramble } from "@/components/ui/text-scramble"
 import { RippleLink } from "@/components/ui/ripple-link"
 
 const NAV_LINKS = [
-  { label: "Services", href: "#solution" },
-  { label: "Systems", href: "#proof" },
-  { label: "Why Us", href: "#why" },
+  { label: "Services", href: "/#solution" },
+  { label: "Systems", href: "/#proof" },
+  { label: "Why Us",  href: "/#why" },
 ]
 
 export function Nav() {
@@ -56,10 +56,10 @@ export function Nav() {
       <ul className={`nav-mobile${mobileOpen ? " open" : ""}`}>
         {NAV_LINKS.map((link) => (
           <li key={link.href}>
-            <Link href={link.href} onClick={close}>{link.label}</Link>
+            <a href={link.href} onClick={close}>{link.label}</a>
           </li>
         ))}
-        <li><Link href="/partner" onClick={close}>Partner With Us</Link></li>
+        <li><Link href="/partner/" onClick={close}>Partner With Us</Link></li>
       </ul>
     </>
   )

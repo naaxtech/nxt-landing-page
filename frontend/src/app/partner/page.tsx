@@ -4,87 +4,146 @@ import { useState, type FormEvent } from "react"
 import Link from "next/link"
 import { Layers, Zap, Globe } from "lucide-react"
 import { Nav } from "@/components/nav"
-import { PricingModule, type PricingPlan } from "@/components/ui/pricing-module"
+import { RippleLink } from "@/components/ui/ripple-link"
 
-// ─── Self-hosted contact API (deployed on Coolify) ──────────────────────────
-// Add NEXT_PUBLIC_API_URL as a GitHub secret (repo → Settings → Secrets → Actions)
-// Value = your Coolify service URL, e.g. https://api.yourdomain.com
-// Then redeploy. Until configured, the form shows a mailto: fallback.
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-// ─── Pricing data ─────────────────────────────────────────────────────────────
-// priceMonthly = regular rate · priceYearly = founding rate (shown by default)
-const PLANS: PricingPlan[] = [
+// ─── Pricing ──────────────────────────────────────────────────────────────────
+type Period = "monthly" | "yearly" | "founding"
+
+const PERIODS: { id: Period; label: string; badge?: string }[] = [
+  { id: "monthly",  label: "Month to Month" },
+  { id: "yearly",   label: "1 Year",  badge: "Save 15%" },
+  { id: "founding", label: "2 Years", badge: "Save 25–27%" },
+]
+
+const PRICES: Record<Period, { launch: number | null; growth: number | null; scale: null }> = {
+  monthly:  { launch: 8000,  growth: 15000, scale: null },
+  yearly:   { launch: 6800,  growth: 12750, scale: null },
+  founding: { launch: 6000,  growth: 11000, scale: null },
+}
+
+const PERIOD_NOTES: Record<Period, string> = {
+  monthly:  "/ mo  ·  no lock-in",
+  yearly:   "/ mo  ·  billed annually",
+  founding: "/ mo  ·  locked for 24 months",
+}
+
+const PERIOD_SAVE: Record<Period, string | null> = {
+  monthly:  null,
+  yearly:   "Save $1,200–$2,250/mo vs monthly",
+  founding: "Save $2,000–$4,000/mo · Founding rate locked",
+}
+
+interface Tier {
+  id: "launch" | "growth" | "scale"
+  name: string
+  icon: React.ReactNode
+  desc: string
+  commitment: Record<Period, string>
+  features: string[]
+  featured?: boolean
+}
+
+const TIERS: Tier[] = [
   {
     id: "launch",
     name: "Launch",
-    description: "For funded founders who need a team to build and launch fast.",
-    icon: <Layers className="w-8 h-8 text-primary" />,
-    priceMonthly: 8000,
-    priceYearly: 6000,
-    users: "3-month minimum engagement",
+    icon: <Layers size={28} strokeWidth={1.5} />,
+    desc: "For funded founders who need a team to build and launch fast.",
+    commitment: {
+      monthly:  "No minimum commitment",
+      yearly:   "12-month contract",
+      founding: "24-month contract — founding rate",
+    },
     features: [
-      { label: "Senior leadership oversight", included: true },
-      { label: "2-person dedicated execution team", included: true },
-      { label: "Automation infrastructure — foundation", included: true },
-      { label: "Core product build — launch-ready", included: true },
-      { label: "Go-to-market execution", included: true },
-      { label: "Accelerated marketing engine", included: false },
+      "Senior leadership oversight",
+      "2-person dedicated execution team",
+      "Automation infrastructure — foundation",
+      "Core product build — launch-ready",
+      "Go-to-market execution",
     ],
   },
   {
     id: "growth",
     name: "Growth",
-    description: "For profitable operators ready to scale revenue and operations.",
-    icon: <Zap className="w-8 h-8 text-primary" />,
-    priceMonthly: 15000,
-    priceYearly: 11000,
-    users: "6-month minimum engagement",
-    recommended: true,
+    icon: <Zap size={28} strokeWidth={1.5} />,
+    desc: "For profitable operators ready to scale revenue and operations.",
+    featured: true,
+    commitment: {
+      monthly:  "No minimum commitment",
+      yearly:   "12-month contract",
+      founding: "24-month contract — founding rate",
+    },
     features: [
-      { label: "Senior leadership oversight", included: true },
-      { label: "3–4 person execution team", included: true },
-      { label: "Full automation layer", included: true },
-      { label: "Accelerated marketing engine", included: true },
-      { label: "Scaling product build", included: true },
-      { label: "Priority execution queue", included: true },
+      "Senior leadership oversight",
+      "3–4 person execution team",
+      "Full automation layer",
+      "Accelerated marketing engine",
+      "Scaling product build",
+      "Priority execution queue",
     ],
   },
   {
     id: "scale",
     name: "Scale",
-    description: "For funded companies with enterprise ambitions and multi-channel scope.",
-    icon: <Globe className="w-8 h-8 text-primary" />,
-    priceMonthly: 25000,
-    priceYearly: 25000,
-    users: "12-month minimum · founding rate on enquiry",
+    icon: <Globe size={28} strokeWidth={1.5} />,
+    desc: "For funded companies with enterprise ambitions and multi-channel scope.",
+    commitment: {
+      monthly:  "Custom engagement",
+      yearly:   "Custom engagement",
+      founding: "Founding rate available on enquiry",
+    },
     features: [
-      { label: "Senior leadership oversight", included: true },
-      { label: "Full execution pod — 5+ specialists", included: true },
-      { label: "Enterprise-grade automation", included: true },
-      { label: "Multi-channel growth engine", included: true },
-      { label: "Complete architecture build", included: true },
-      { label: "Weekly leadership sessions", included: true },
+      "Senior leadership oversight",
+      "Full execution pod — 5+ specialists",
+      "Enterprise-grade automation",
+      "Multi-channel growth engine",
+      "Complete architecture build",
+      "Weekly leadership sessions",
     ],
   },
 ]
 
+function PriceDisplay({ tier, period }: { tier: Tier; period: Period }) {
+  if (tier.id === "scale") {
+    return (
+      <>
+        <div className="p-price-enquire">Custom</div>
+        <div className="p-price-period">Tailored to scope — enquire below</div>
+      </>
+    )
+  }
+  const price = PRICES[period][tier.id]!
+  return (
+    <>
+      <div className="p-price-amount">
+        <span className="p-curr">$</span>
+        {price.toLocaleString()}
+      </div>
+      <div className="p-price-period">{PERIOD_NOTES[period]}</div>
+      {PERIOD_SAVE[period] && (
+        <div className="p-price-save">{PERIOD_SAVE[period]}</div>
+      )}
+    </>
+  )
+}
+
 export default function PartnerPage() {
+  const [period, setPeriod] = useState<Period>("founding")
   const [selectedTier, setSelectedTier] = useState("growth")
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle")
 
-  const handlePlanSelect = (planId: string) => {
-    setSelectedTier(planId)
+  const scrollApply = (tierId: string) => {
+    setSelectedTier(tierId)
     document.getElementById("apply")?.scrollIntoView({ behavior: "smooth" })
   }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!API_URL) return
-
     setStatus("sending")
     const data = Object.fromEntries(new FormData(e.currentTarget))
-
     try {
       const res = await fetch(`${API_URL}/contact`, {
         method: "POST",
@@ -104,136 +163,184 @@ export default function PartnerPage() {
       <div className="grid-overlay" />
       <Nav />
 
-      {/* ── FOUNDING HERO ── */}
-      <section style={{ paddingTop: 120, paddingBottom: 80, borderBottom: "1px solid var(--border)" }}>
-        <div className="section-inner">
-          <div style={{ maxWidth: 760 }}>
-            <div className="founding-badge" style={{ marginBottom: 32 }}>
-              ★ Founding Partner Program — 3 Spots Only
-            </div>
-            <h1 style={{
-              fontFamily: "var(--font-display)", fontWeight: 900,
-              fontSize: "clamp(44px, 7vw, 80px)", lineHeight: 0.95,
-              letterSpacing: "-0.03em", textTransform: "uppercase", color: "var(--white)",
-              marginBottom: 32,
-            }}>
-              Build With Us<br />
-              <span style={{ color: "var(--yellow)" }}>From the Start.</span>
-            </h1>
-            <p style={{ fontSize: 18, color: "var(--gray)", lineHeight: 1.75, maxWidth: 560, marginBottom: 40 }}>
-              We&apos;re opening three founding partnerships at locked rates —
-              for the businesses that help shape what Naaxtech becomes.
-              You get a senior execution team on day one, locked in for 24 months.
-            </p>
-            <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-              <a href="#pricing" className="btn-primary" style={{ textDecoration: "none" }}>
-                See Founding Rates
-              </a>
-              <a href="#apply" className="btn-ghost" style={{ textDecoration: "none" }}>
-                <span>Apply now</span>
-                <span className="arrow" />
-              </a>
-            </div>
+      {/* ── HERO ── */}
+      <section className="p-section" style={{ paddingTop: 120 }}>
+        <div className="p-section-inner">
+          <div className="founding-badge" style={{ marginBottom: 28 }}>
+            ★ Founding Partner Program — 3 Spots Only
+          </div>
+          <h1 className="p-section-h1">
+            Build With Us<br />
+            <span style={{ color: "var(--yellow)" }}>From the Start.</span>
+          </h1>
+          <p className="p-section-p">
+            Three founding partnerships at rates that get locked in for 24 months.
+            A senior execution team from day one — the longer the contract, the better the rate.
+          </p>
+          <div className="p-btn-row">
+            <RippleLink href="#pricing" className="btn-primary" >See Rates</RippleLink>
+            <a href="#apply" className="btn-ghost">
+              <span>Apply now</span>
+              <span className="arrow" />
+            </a>
           </div>
         </div>
       </section>
 
       {/* ── FOUNDING BENEFITS ── */}
-      <section style={{ padding: "80px 0", borderBottom: "1px solid var(--border)" }}>
-        <div className="section-inner">
+      <section className="p-section p-section-alt">
+        <div className="p-section-inner">
           <div className="section-label">What founding partners get</div>
-          <div style={{
-            display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: 1, background: "var(--border)", border: "1px solid var(--border)", marginTop: 32,
-          }}>
+          <div className="p-benefits-grid">
             {[
-              { label: "Locked Rate", body: "Your founding rate stays fixed for 24 months. No increases. No renegotiation at renewal." },
-              { label: "25–27% Off", body: "Founding rates are permanently lower than standard pricing — for the life of the contract." },
-              { label: "Direct Access", body: "You work directly with the people making decisions, not account managers." },
-              { label: "Founding Status", body: "Recognised as a founding partner in case studies and future positioning materials." },
-              { label: "First to New", body: "Priority access to new capabilities and systems before they reach the general partner base." },
-              { label: "Shape the Work", body: "Founding partners influence what gets built next. Your use case helps define the roadmap." },
+              { label: "Locked Rate",    body: "Your founding rate stays fixed for 24 months. No increases. No renegotiation at renewal." },
+              { label: "25–27% Off",     body: "The 2-year founding rate is permanently lower than month-to-month. Locked forever." },
+              { label: "Direct Access",  body: "You work directly with the people making decisions, not account managers." },
+              { label: "Founding Status",body: "Recognised in case studies and positioning materials. Your story shapes our track record." },
+              { label: "First to New",   body: "Priority access to new capabilities before they reach the general partner base." },
+              { label: "Shape the Work", body: "Founding partners influence what gets built next. Your use case defines the roadmap." },
             ].map((b) => (
-              <div key={b.label} style={{ background: "var(--card)", padding: "28px 24px" }}>
-                <div style={{
-                  fontFamily: "var(--font-mono)", fontSize: 10,
-                  letterSpacing: "0.15em", textTransform: "uppercase",
-                  color: "var(--yellow)", marginBottom: 10,
-                }}>{b.label}</div>
-                <p style={{ fontSize: 14, color: "var(--gray)", lineHeight: 1.65 }}>{b.body}</p>
+              <div key={b.label} className="p-benefit-card">
+                <div className="p-benefit-label">{b.label}</div>
+                <p className="p-benefit-body">{b.body}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── PRICING MODULE ── */}
-      <section id="pricing" style={{ borderBottom: "1px solid var(--border)" }}>
-        <div className="section-inner">
-          <div className="section-label" style={{ paddingTop: 80 }}>Partnership Investment</div>
-          <h2 style={{
-            fontFamily: "var(--font-display)", fontWeight: 900,
-            fontSize: "clamp(32px, 4vw, 52px)", lineHeight: 0.95,
-            letterSpacing: "-0.02em", textTransform: "uppercase", color: "var(--white)",
-          }}>
-            Founding Rates.<br />
-            <span style={{ color: "var(--yellow)" }}>Locked for 24 Months.</span>
+      {/* ── PRICING ── */}
+      <section id="pricing" className="p-section">
+        <div className="p-section-inner">
+          <div className="section-label">Partnership Investment</div>
+          <h2 className="p-section-h2">
+            The longer the contract,<br />
+            <span style={{ color: "var(--yellow)" }}>the better the rate.</span>
           </h2>
-          <p style={{ fontSize: 15, color: "var(--gray)", lineHeight: 1.75, maxWidth: 520, marginTop: 16 }}>
-            Toggle to compare founding vs. standard rates. All tiers include full-scope execution —
-            the rate difference reflects the early relationship, not the value delivered.
+          <p className="p-section-note" style={{ marginTop: 16, maxWidth: 480 }}>
+            All tiers include the same full-scope execution. The rate reflects the commitment,
+            not the service level.
+          </p>
+
+          {/* Period toggle */}
+          <div className="p-period-wrap">
+            <div className="p-period-tabs">
+              {PERIODS.map((p) => (
+                <button
+                  key={p.id}
+                  className={`p-period-tab${period === p.id ? " active" : ""}`}
+                  onClick={() => setPeriod(p.id)}
+                >
+                  {p.label}
+                  {p.badge && period !== p.id && (
+                    <span style={{
+                      marginLeft: 8,
+                      fontSize: 9,
+                      color: "var(--yellow)",
+                      fontFamily: "var(--font-mono)",
+                      letterSpacing: "0.05em",
+                    }}>
+                      {p.badge}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="p-pricing-grid">
+            {TIERS.map((tier) => (
+              <div key={tier.id} className={`p-price-card${tier.featured ? " featured" : ""}`}>
+                {tier.featured && (
+                  <div className="p-featured-badge">Most Popular</div>
+                )}
+                <div>
+                  <div className="p-tier-name">{tier.name}</div>
+                  <div style={{ color: "var(--yellow)", margin: "12px 0 4px" }}>
+                    {tier.icon}
+                  </div>
+                </div>
+                <PriceDisplay tier={tier} period={period} />
+                <p className="p-price-desc">{tier.desc}</p>
+                <div className="p-price-features">
+                  {tier.features.map((f) => (
+                    <div key={f} className="p-price-feature">{f}</div>
+                  ))}
+                </div>
+                <div className="p-price-commitment">{tier.commitment[period]}</div>
+                <div className="p-price-cta">
+                  {tier.featured ? (
+                    <button
+                      className="btn-primary"
+                      style={{ width: "100%", border: "none", cursor: "pointer" }}
+                      onClick={() => scrollApply(tier.id)}
+                    >
+                      Apply — Growth
+                    </button>
+                  ) : (
+                    <button
+                      className="btn-outline"
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: 13,
+                        letterSpacing: "0.14em",
+                        textTransform: "uppercase",
+                        color: "var(--white)",
+                        border: "1px solid var(--border)",
+                        padding: "16px 24px",
+                        cursor: "pointer",
+                        background: "none",
+                        width: "100%",
+                        transition: "border-color 0.2s, background 0.2s",
+                        clipPath: "polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%)",
+                        position: "relative" as const,
+                        overflow: "hidden",
+                      }}
+                      onClick={() => scrollApply(tier.id)}
+                    >
+                      Apply — {tier.name}
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p style={{
+            textAlign: "center", marginTop: 24,
+            fontFamily: "var(--font-mono)", fontSize: 10,
+            letterSpacing: "0.08em", color: "var(--gray-dim)",
+          }}>
+            After the founding period closes, rates revert to standard pricing.
+            Existing founding partners keep their locked rate through renewal.
           </p>
         </div>
-        <PricingModule
-          title=""
-          subtitle=""
-          annualBillingLabel="Founding Partner Rates"
-          buttonLabel="Apply for This Tier"
-          periodMonthly="/ mo  ·  standard rate"
-          periodAnnual="/ mo  ·  locked for 24 months"
-          plans={PLANS}
-          defaultAnnual={true}
-          onPlanSelect={handlePlanSelect}
-          className="pt-0"
-        />
       </section>
 
       {/* ── VALUE COMPARISON ── */}
-      <section style={{ padding: "80px 0", borderBottom: "1px solid var(--border)", background: "var(--surface)" }}>
-        <div className="section-inner" style={{ maxWidth: 800 }}>
+      <section className="p-section p-section-alt">
+        <div className="p-section-inner" style={{ maxWidth: 800 }}>
           <div className="section-label">The math</div>
-          <h2 style={{
-            fontFamily: "var(--font-display)", fontWeight: 900,
-            fontSize: "clamp(28px, 3.5vw, 44px)", lineHeight: 0.95,
-            letterSpacing: "-0.02em", textTransform: "uppercase", color: "var(--white)",
-            marginBottom: 8,
-          }}>
-            What this costs assembled yourself.
+          <h2 className="p-section-h2">
+            What this costs if you assemble it yourself.
           </h2>
-          <p style={{ fontSize: 13, color: "var(--gray)", marginBottom: 40, fontFamily: "var(--font-mono)", letterSpacing: "0.05em" }}>
-            Market rates, 2026 — Glassdoor, AlgoCentric, UX Continuum, Enrich Labs
+          <p style={{ fontSize: 12, color: "var(--gray-dim)", marginTop: 10, marginBottom: 32, fontFamily: "var(--font-mono)", letterSpacing: "0.05em" }}>
+            Market rates, 2026 — Glassdoor · AlgoCentric · UX Continuum · Enrich Labs
           </p>
-          <div style={{ border: "1px solid var(--border)" }}>
+          <div className="p-value-table">
             {[
-              ["Fractional CTO", "$8,000–$15,000/mo"],
-              ["Fractional CMO", "$8,000–$15,000/mo"],
-              ["2–4 dedicated specialists", "$9,000–$13,000/mo"],
-              ["AI & automation stack", "$2,000–$5,000/mo"],
-              ["Continuous product build", "$5,000–$15,000/mo"],
+              ["Fractional CTO",                  "$8,000–$15,000/mo"],
+              ["Fractional CMO",                  "$8,000–$15,000/mo"],
+              ["2–4 dedicated specialists",        "$9,000–$13,000/mo"],
+              ["AI & automation stack management", "$2,000–$5,000/mo"],
+              ["Continuous product build",         "$5,000–$15,000/mo"],
             ].map(([label, cost], i) => (
-              <div key={i} style={{
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-                padding: "16px 24px", borderBottom: "1px solid var(--border)", gap: 24,
-              }}>
-                <span style={{ fontSize: 14, color: "var(--gray)" }}>{label}</span>
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--white)", whiteSpace: "nowrap" }}>{cost}</span>
+              <div key={i} className="p-value-row">
+                <span className="p-value-label">{label}</span>
+                <span className="p-value-cost">{cost}</span>
               </div>
             ))}
-            <div style={{
-              display: "flex", alignItems: "center", justifyContent: "space-between",
-              padding: "16px 24px", background: "rgba(255,255,255,0.03)",
-              borderTop: "1px solid var(--border-bright)", gap: 24,
-            }}>
+            <div className="p-value-total">
               <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gray)" }}>
                 Assembled separately
               </span>
@@ -242,47 +349,35 @@ export default function PartnerPage() {
               </span>
             </div>
           </div>
-          <div style={{
-            background: "var(--yellow-dim)", border: "1px solid rgba(245,200,66,0.3)",
-            padding: "24px", marginTop: 16,
-          }}>
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--yellow)", marginBottom: 8 }}>
-              Naaxtech Growth — Founding Rate
-            </div>
-            <div style={{ fontFamily: "var(--font-display)", fontWeight: 900, fontSize: "clamp(28px, 3vw, 40px)", color: "var(--white)", letterSpacing: "-0.02em" }}>
+          <div className="p-value-highlight">
+            <div className="label">Naaxtech Growth — 2-Year Founding Rate</div>
+            <div className="amount">
               $11,000<span style={{ fontSize: "0.45em", color: "var(--gray)", fontWeight: 400 }}>/mo</span>
             </div>
-            <p style={{ fontSize: 13, color: "var(--gray)", marginTop: 6 }}>
+            <p className="note">
               Senior leadership + full execution team + AI-powered delivery. Day one.
-              Often less than hiring one senior engineer.
+              Often less than a single senior engineer hire.
             </p>
           </div>
         </div>
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section style={{ padding: "80px 0", borderBottom: "1px solid var(--border)" }}>
-        <div className="section-inner">
+      <section className="p-section">
+        <div className="p-section-inner">
           <div className="section-label">How it works</div>
-          <div style={{
-            display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: 1, background: "var(--border)", border: "1px solid var(--border)", marginTop: 32,
-          }}>
+          <div className="p-how-grid">
             {[
-              { label: "Billing",        body: "Monthly subscription — not hourly, not per-task. One fee covers everything in scope." },
-              { label: "Onboarding",     body: "Discovery sprint in Week 1. Execution starts Week 2. No ramp-up lag." },
-              { label: "Communication",  body: "Dedicated Slack or Mattermost channel. You talk directly to the people doing the work." },
-              { label: "Reporting",      body: "Weekly async updates + monthly strategy review. You always know what's in motion." },
-              { label: "Payment",        body: "50% upfront on signing. Net-15 thereafter. Wire or Wise." },
-              { label: "Ownership",      body: "You own your data, content, and accounts. We own the automation engine. You keep everything." },
+              { label: "Billing",       body: "Monthly subscription — not hourly, not per-task. One fee, everything in scope." },
+              { label: "Onboarding",    body: "Discovery sprint in Week 1. Execution begins Week 2. No ramp-up lag." },
+              { label: "Communication", body: "Dedicated Slack or Mattermost channel. Direct line to the people doing the work." },
+              { label: "Reporting",     body: "Weekly async updates + monthly strategy review. Full visibility, always." },
+              { label: "Payment",       body: "50% upfront on signing. Net-15 thereafter. Wire or Wise accepted." },
+              { label: "Ownership",     body: "You own your data, content, and accounts. We own the automation engine. You keep everything." },
             ].map((item) => (
-              <div key={item.label} style={{ background: "var(--card)", padding: "24px 20px" }}>
-                <div style={{
-                  fontFamily: "var(--font-mono)", fontSize: 10,
-                  letterSpacing: "0.15em", textTransform: "uppercase",
-                  color: "var(--yellow)", marginBottom: 8,
-                }}>{item.label}</div>
-                <p style={{ fontSize: 13, color: "var(--gray)", lineHeight: 1.65 }}>{item.body}</p>
+              <div key={item.label} className="p-how-card">
+                <div className="p-how-label">{item.label}</div>
+                <p className="p-how-body">{item.body}</p>
               </div>
             ))}
           </div>
@@ -290,22 +385,17 @@ export default function PartnerPage() {
       </section>
 
       {/* ── CONTACT FORM ── */}
-      <section id="apply" style={{ padding: "100px 0" }}>
-        <div className="section-inner">
+      <section id="apply" className="p-section p-section-alt">
+        <div className="p-section-inner">
           <div style={{ textAlign: "center", marginBottom: 56 }}>
             <div className="section-label" style={{ justifyContent: "center" }}>Apply</div>
-            <h2 style={{
-              fontFamily: "var(--font-display)", fontWeight: 900,
-              fontSize: "clamp(32px, 4.5vw, 56px)", lineHeight: 0.95,
-              letterSpacing: "-0.02em", textTransform: "uppercase", color: "var(--white)",
-              marginBottom: 16,
-            }}>
+            <h2 className="p-section-h2" style={{ maxWidth: 560, margin: "0 auto" }}>
               Let&apos;s Talk About<br />
               <span style={{ color: "var(--yellow)" }}>Your Business.</span>
             </h2>
-            <p style={{ fontSize: 15, color: "var(--gray)", lineHeight: 1.75, maxWidth: 480, margin: "0 auto" }}>
-              One conversation. We&apos;ll tell you honestly if we&apos;re the right fit —
-              and what execution would look like for your specific situation.
+            <p style={{ fontSize: 15, color: "var(--gray)", lineHeight: 1.75, maxWidth: 460, margin: "16px auto 0" }}>
+              One conversation. We&apos;ll tell you if we&apos;re the right fit —
+              and what execution looks like for your situation.
             </p>
           </div>
 
@@ -315,8 +405,8 @@ export default function PartnerPage() {
                 <div className="form-success-icon">✓</div>
                 <h3>Message Received.</h3>
                 <p>
-                  You&apos;ll hear from us within 48 hours — directly, no automated replies,
-                  no sales team in between.
+                  You&apos;ll hear back within 48 hours — directly, no automated replies,
+                  no sales team.
                 </p>
               </div>
             ) : !API_URL ? (
@@ -325,8 +415,8 @@ export default function PartnerPage() {
                   Form Setup Required
                 </p>
                 <p style={{ color: "var(--gray)", fontSize: 14, lineHeight: 1.7 }}>
-                  Set <code style={{ color: "var(--white)", background: "var(--surface)", padding: "2px 6px" }}>NEXT_PUBLIC_API_URL</code> in GitHub Secrets
-                  and deploy <code style={{ color: "var(--white)", background: "var(--surface)", padding: "2px 6px" }}>api/</code> on Coolify to activate.
+                  Deploy <code style={{ color: "var(--white)", background: "var(--surface)", padding: "2px 6px" }}>api/</code> on Coolify and set{" "}
+                  <code style={{ color: "var(--white)", background: "var(--surface)", padding: "2px 6px" }}>NEXT_PUBLIC_API_URL</code> in GitHub Secrets.
                 </p>
                 <div style={{ marginTop: 24 }}>
                   <a href="mailto:hello@naaxtech.com?subject=Partnership Inquiry" className="btn-primary" style={{ textDecoration: "none" }}>
@@ -357,48 +447,44 @@ export default function PartnerPage() {
                   </div>
                 </div>
                 <div className="form-field">
-                  <label className="form-label" htmlFor="tier">Partnership Tier Interest *</label>
+                  <label className="form-label" htmlFor="tier">Tier of Interest *</label>
                   <select
                     className="form-select"
-                    id="tier"
-                    name="tier"
-                    required
+                    id="tier" name="tier" required
                     value={selectedTier}
                     onChange={(e) => setSelectedTier(e.target.value)}
                     style={{ color: "var(--white)" }}
                   >
                     <option value="" disabled>Select a tier…</option>
-                    <option value="launch">Launch — $6,000/mo founding ($8,000 standard)</option>
-                    <option value="growth">Growth ★ — $11,000/mo founding ($15,000 standard)</option>
-                    <option value="scale">Scale — $25,000/mo (founding rate on enquiry)</option>
-                    <option value="unsure">Not sure yet — help me figure it out</option>
+                    <option value="launch">Launch — from $6,000/mo (2-yr) to $8,000/mo</option>
+                    <option value="growth">Growth ★ — from $11,000/mo (2-yr) to $15,000/mo</option>
+                    <option value="scale">Scale — Custom pricing, enquire</option>
+                    <option value="unsure">Not sure yet — help me decide</option>
                   </select>
                 </div>
                 <div className="form-field">
                   <label className="form-label" htmlFor="message">Tell us about your business *</label>
                   <textarea
                     className="form-textarea"
-                    id="message"
-                    name="message"
-                    required
-                    placeholder="What are you building? What's your biggest operational or growth challenge right now? Are you funded or generating revenue?"
+                    id="message" name="message" required
+                    placeholder="What are you building? What's your biggest challenge right now? Are you funded or generating revenue?"
                     style={{ minHeight: 140 }}
                   />
                 </div>
                 <div className="form-field">
-                  <label className="form-label" htmlFor="referral">How did you hear about us?</label>
+                  <label className="form-label" htmlFor="referral">How did you find us?</label>
                   <input className="form-input" id="referral" name="referral" type="text" placeholder="Referral, LinkedIn, search…" />
                 </div>
                 {status === "error" && (
                   <p style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "#ff6b6b", letterSpacing: "0.08em" }}>
-                    Something went wrong. Email us directly at hello@naaxtech.com
+                    Something went wrong. Email us at hello@naaxtech.com
                   </p>
                 )}
                 <button type="submit" className="form-submit" disabled={status === "sending"}>
-                  {status === "sending" ? "Sending..." : "Send Your Application →"}
+                  {status === "sending" ? "Sending…" : "Send Your Application →"}
                 </button>
                 <p className="form-note">
-                  We read every message personally. You&apos;ll hear back within 48 hours —
+                  Every message is read personally. You&apos;ll hear back within 48 hours —
                   no automation, no pitch decks unless you ask.
                 </p>
               </form>
@@ -414,7 +500,7 @@ export default function PartnerPage() {
         <span className="footer-copy">© 2025 Naaxtech. Technology · Marketing · Innovation.</span>
         <ul className="footer-links">
           <li><Link href="/">Home</Link></li>
-          <li><Link href="mailto:hello@naaxtech.com">hello@naaxtech.com</Link></li>
+          <li><a href="mailto:hello@naaxtech.com">hello@naaxtech.com</a></li>
         </ul>
       </footer>
     </div>

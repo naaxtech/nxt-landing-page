@@ -77,7 +77,7 @@ export function HeroSection() {
 
         <div className="hero-actions">
           <RippleLink href="/partner" className="btn-primary">Become a Partner</RippleLink>
-          <Link href="#solution" className="btn-ghost">
+          <Link href="/#solution" className="btn-ghost">
             <span>See how it works</span>
             <span className="arrow" />
           </Link>

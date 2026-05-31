@@ -79,17 +79,21 @@ export function TextScramble({
       onMouseLeave={handleMouseLeave}
     >
       <span className={`relative ${textClassName}`}>
-        {displayText.split("").map((char, i) => (
-          <span
-            key={i}
-            className={`inline-block transition-all duration-150 ${
-              isScrambling && char !== text[i] ? "text-primary scale-110" : restCharClassName
-            }`}
-            style={{ transitionDelay: `${i * 10}ms` }}
-          >
-            {char}
-          </span>
-        ))}
+        {displayText.split("").map((char, i) =>
+          char === " " ? (
+            <span key={i}>&nbsp;</span>
+          ) : (
+            <span
+              key={i}
+              className={`inline-block transition-all duration-150 ${
+                isScrambling && char !== text[i] ? "text-primary scale-110" : restCharClassName
+              }`}
+              style={{ transitionDelay: `${i * 10}ms` }}
+            >
+              {char}
+            </span>
+          )
+        )}
       </span>
 
       {!bare && (
