@@ -501,6 +501,14 @@ export default function PartnerPage() {
         <ul className="footer-links">
           <li><Link href="/">Home</Link></li>
           <li><a href="mailto:hello@naaxtech.com">hello@naaxtech.com</a></li>
+          <li>
+            <a href="https://www.linkedin.com/company/naaxtech/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
+                <circle cx="4" cy="4" r="2"/>
+              </svg>
+            </a>
+          </li>
         </ul>
       </footer>
     </div>

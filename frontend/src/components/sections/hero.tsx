@@ -84,11 +84,11 @@ export function HeroSection() {
         </p>
 
         <div className="hero-actions">
-          <RippleLink href="/partner" className="btn-primary">Become a Partner</RippleLink>
-          <Link href="/#solution" className="btn-ghost">
+          <RippleLink href="/partner/" className="btn-primary">Become a Partner</RippleLink>
+          <a href="#solution" className="btn-ghost">
             <span>See how it works</span>
             <span className="arrow" />
-          </Link>
+          </a>
         </div>
       </div>
 

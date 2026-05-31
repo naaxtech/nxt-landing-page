@@ -41,7 +41,7 @@ export function Nav() {
               </Link>
             </li>
           ))}
-          <li><RippleLink href="/partner" className="nav-cta">Partner With Us</RippleLink></li>
+          <li><RippleLink href="/partner/" className="nav-cta">Partner With Us</RippleLink></li>
         </ul>
 
         <button
@@ -60,6 +60,11 @@ export function Nav() {
           </li>
         ))}
         <li><Link href="/partner/" onClick={close}>Partner With Us</Link></li>
+        <li>
+          <a href="https://www.linkedin.com/company/naaxtech/" target="_blank" rel="noopener noreferrer" onClick={close}>
+            LinkedIn
+          </a>
+        </li>
       </ul>
     </>
   )

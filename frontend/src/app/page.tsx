@@ -252,7 +252,7 @@ export default function Home() {
               and show you exactly what closing it looks like.
             </p>
             <div className="cta-actions">
-              <RippleLink href="/partner" className="btn-primary">Become a Partner</RippleLink>
+              <RippleLink href="/partner/" className="btn-primary">Become a Partner</RippleLink>
               <Link href="mailto:hello@naaxtech.com" className="btn-ghost">
                 <span>Get a Systems Audit</span>
                 <span className="arrow" />
@@ -268,9 +268,18 @@ export default function Home() {
         </Link>
         <span className="footer-copy">© 2025 Naaxtech. Technology · Marketing · Innovation.</span>
         <ul className="footer-links">
-          <li><Link href="#">Services</Link></li>
-          <li><Link href="#">Systems</Link></li>
-          <li><Link href="#">Contact</Link></li>
+          <li><a href="#solution">Services</a></li>
+          <li><a href="#proof">Systems</a></li>
+          <li><Link href="/partner/">Partner With Us</Link></li>
+          <li><a href="mailto:hello@naaxtech.com">Contact</a></li>
+          <li>
+            <a href="https://www.linkedin.com/company/naaxtech/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
+                <circle cx="4" cy="4" r="2"/>
+              </svg>
+            </a>
+          </li>
         </ul>
       </footer>
     </>

@@ -331,7 +331,7 @@ nav#navbar.scrolled { border-color: var(--border-bright); }
 /* ══════════════════════════════════════════
    SECTION BASE
 ══════════════════════════════════════════ */
-section { position: relative; z-index: 1; }
+section { position: relative; z-index: 1; scroll-margin-top: 72px; }
 .section-inner { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
 .section-label {
   font-family: var(--font-mono); font-size: 10px;
