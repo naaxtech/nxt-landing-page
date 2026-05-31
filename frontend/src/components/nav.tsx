@@ -41,6 +41,14 @@ export function Nav() {
               </Link>
             </li>
           ))}
+          <li>
+            <Link href="/lab/">
+              <TextScramble
+                text="THE LAB"
+                textClassName="font-mono text-[13px] tracking-[0.1em] uppercase"
+              />
+            </Link>
+          </li>
           <li><RippleLink href="/partner/" className="nav-cta">Partner With Us</RippleLink></li>
         </ul>
 
@@ -59,6 +67,7 @@ export function Nav() {
             <a href={link.href} onClick={close}>{link.label}</a>
           </li>
         ))}
+        <li><Link href="/lab/" onClick={close}>The Lab</Link></li>
         <li><Link href="/partner/" onClick={close}>Partner With Us</Link></li>
         <li>
           <a href="https://www.linkedin.com/company/naaxtech/" target="_blank" rel="noopener noreferrer" onClick={close}>

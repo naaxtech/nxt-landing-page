@@ -1085,3 +1085,175 @@ footer {
   .why-quote { font-size: 15px; }
   .section-label { font-size: 9px; }
 }
+
+/* ══════════════════════════════════════════
+   THE LAB — /lab page
+══════════════════════════════════════════ */
+
+/* ── Nav ── */
+.lab-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 64px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,.78); backdrop-filter: blur(14px);
+}
+.lab-brand {
+  font-family: var(--font-display); font-weight: 900; font-size: 19px;
+  letter-spacing: .06em; text-transform: uppercase;
+  display: flex; align-items: center; gap: 10px;
+}
+.lab-brand .t  { color: var(--yellow); }
+.lab-brand .div { width: 1px; height: 18px; background: var(--border-bright); }
+.lab-brand .lab { font-family: var(--font-mono); font-size: 11px; letter-spacing: .24em; color: var(--gray); font-weight: 400; }
+.lab-tabs { display: flex; border: 1px solid var(--border-bright); }
+.lab-tabs button {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--gray);
+  background: transparent; border: none; padding: 11px 22px; cursor: pointer;
+  transition: color .2s;
+}
+.lab-tabs button.on { color: var(--black); background: var(--yellow); }
+.lab-back {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--gray); transition: color .2s;
+}
+.lab-back:hover { color: var(--white); }
+
+/* ── Tab panels ── */
+.tab { display: none; }
+.tab.active { display: block; }
+.tab-intro { padding: 108px 40px 0; position: relative; z-index: 2; }
+.tab-eyebrow {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--yellow);
+  display: flex; align-items: center; gap: 14px; margin-bottom: 22px;
+}
+.tab-eyebrow::before { content: ''; width: 40px; height: 1px; background: var(--yellow); }
+.tab-title {
+  font-family: var(--font-display); font-weight: 900; text-transform: uppercase;
+  font-size: clamp(40px,7vw,96px); line-height: .9; letter-spacing: -.03em;
+}
+.tab-title .stroke { -webkit-text-stroke: 2px var(--white); color: transparent; }
+.tab-title .y { color: var(--yellow); }
+.tab-sub { margin-top: 24px; max-width: 600px; color: var(--gray); font-size: 18px; line-height: 1.55; }
+.tab-sub strong { color: var(--white); font-weight: 600; }
+
+/* ── Globe stage ── */
+.globe-stage {
+  position: relative; z-index: 1; margin-top: 24px;
+  height: 78vh; min-height: 600px;
+  display: grid; grid-template-columns: 1fr 380px;
+}
+.globe-wrap { position: relative; overflow: hidden; }
+#globe { display: block; width: 100%; height: 100%; cursor: grab; touch-action: none; }
+#globe:active { cursor: grabbing; }
+.globe-hint {
+  position: absolute; left: 40px; bottom: 28px;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--gray-dim); pointer-events: none;
+}
+.globe-watermark {
+  position: absolute; left: 40px; top: 18px;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--gray-dim);
+  display: flex; align-items: center; gap: 10px; pointer-events: none;
+}
+.globe-watermark .live {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--yellow);
+  animation: lblink 1.8s ease-in-out infinite;
+}
+@keyframes lblink {
+  0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(245,200,66,.5); }
+  50%      { opacity: .4; box-shadow: 0 0 0 6px rgba(245,200,66,0); }
+}
+
+/* ── Signal panel ── */
+.signal {
+  border-left: 1px solid var(--border); background: rgba(8,8,8,.6);
+  backdrop-filter: blur(6px); padding: 36px 32px;
+  display: flex; flex-direction: column; position: relative; overflow: hidden;
+}
+.signal-kicker {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--yellow);
+  display: flex; align-items: center; gap: 10px; margin-bottom: 26px;
+}
+.signal-kicker .dot {
+  width: 6px; height: 6px; background: var(--yellow); border-radius: 50%;
+  animation: lblink 1.8s ease-in-out infinite;
+}
+.sig-index   { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; color: var(--gray-dim); margin-bottom: 10px; }
+.sig-hub     { font-family: var(--font-display); font-weight: 900; font-size: 34px; text-transform: uppercase; letter-spacing: -.02em; line-height: 1; }
+.sig-coords  { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; color: var(--gray); margin-top: 10px; }
+.sig-line    { margin-top: 22px; font-size: 17px; line-height: 1.5; color: var(--white); min-height: 78px; }
+.sig-line b  { color: var(--yellow); font-weight: 600; }
+.sig-domains { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.sig-domain  {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--gray); border: 1px solid var(--border-bright); padding: 6px 11px;
+}
+.sig-meter   { margin-top: auto; padding-top: 26px; border-top: 1px solid var(--border); }
+.sig-meter-lab {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--gray-dim);
+  display: flex; justify-content: space-between; margin-bottom: 10px;
+}
+.sig-bar   { height: 3px; background: var(--border); position: relative; overflow: hidden; }
+.sig-bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--yellow); width: 0; transition: width .8s var(--ease); }
+.sig-foot  {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--gray-dim); margin-top: 18px; line-height: 1.7;
+}
+
+/* ── Ticker ── */
+.ticker {
+  border-top: 1px solid var(--border); background: var(--surface);
+  overflow: hidden; white-space: nowrap; height: 46px;
+  display: flex; align-items: center; position: relative; z-index: 1;
+}
+.ticker-track { display: inline-flex; gap: 0; animation: scrollx 38s linear infinite; }
+.ticker-item  {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--gray); padding: 0 26px;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.ticker-item .b { width: 5px; height: 5px; background: var(--yellow); }
+.ticker-item .c { color: var(--gray-dim); }
+@keyframes scrollx { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── Exhibits ── */
+.exhibits { padding: 96px 40px 110px; position: relative; z-index: 2; border-top: 1px solid var(--border); }
+.ex-grid  {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 44px;
+}
+.ex        { background: var(--card); position: relative; overflow: hidden; }
+.ex-canvas { height: 200px; width: 100%; display: block; background: var(--black); border-bottom: 1px solid var(--border); }
+.ex-meta   { padding: 24px 26px 28px; }
+.ex-k      { font-family: var(--font-mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--yellow); }
+.ex-name   { font-family: var(--font-display); font-weight: 800; font-size: 19px; text-transform: uppercase; letter-spacing: .01em; margin: 12px 0 8px; }
+.ex-desc   { font-size: 13px; color: var(--gray); line-height: 1.55; }
+
+/* ── Systems tab ── */
+.sys-embed-wrap { padding: 24px 40px 100px; position: relative; z-index: 1; }
+#sys-frame {
+  width: 100%; border: 1px solid var(--border); background: var(--card);
+  display: block; min-height: 900px; margin-top: 24px;
+}
+
+/* ── Lab responsive ── */
+@media (max-width: 980px) {
+  .globe-stage { grid-template-columns: 1fr; height: auto; }
+  .signal { border-left: none; border-top: 1px solid var(--border); }
+}
+@media (max-width: 860px) {
+  .ex-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .lab-nav { padding: 0 18px; }
+  .lab-back { display: none; }
+  .lab-brand .lab { display: none; }
+  .tab-intro, .exhibits, .sys-embed-wrap { padding-left: 18px; padding-right: 18px; }
+  .globe-hint, .globe-watermark { left: 18px; }
+}

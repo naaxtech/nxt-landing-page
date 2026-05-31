@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naaxtech Execution Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="systems.css">
+<style>
+  body { background: transparent; }
+  .grid-overlay { display: none; }
+  .engine { padding: 8px 4px 4px; max-width: 100%; }
+  .eng-head { margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<div class="engine">
+  <div class="eng-head">
+    <div class="eng-head-l">
+      <div class="eng-label">Naaxtech Execution Engine · Live Architecture</div>
+      <p class="eng-sub" style="margin-top:0;font-size:16px">Hover any layer. <strong>Flip the toggle</strong> to read the same machine as outcomes, or as the architecture underneath.</p>
+    </div>
+    <div>
+      <div class="mode" id="mode" data-mode="biz">
+        <span class="thumb"></span>
+        <button id="m-biz" class="on">Outcomes</button>
+        <button id="m-arch">Architecture</button>
+      </div>
+      <div class="mode-caption" id="mode-caption">Speaking to the operator — outcomes first</div>
+    </div>
+  </div>
+
+  <div class="lane-rail" id="lane-rail" aria-label="The five execution lanes"></div>
+
+  <div class="eng-grid">
+    <div class="pipeline">
+      <div class="pipe-spine"><div class="pipe-pulse"></div></div>
+      <div id="stage-list"></div>
+    </div>
+    <div class="readout">
+      <div class="ro-kicker" id="ro-kicker"></div>
+      <div class="ro-title morph" id="ro-title"></div>
+      <div class="ro-desc" id="ro-desc"></div>
+      <div class="ro-tools-label">In this stage</div>
+      <div class="ro-tools" id="ro-tools"></div>
+      <div class="ro-metric">
+        <div class="num" id="ro-num"></div>
+        <div class="lab" id="ro-lab"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="systems.js"></script>
+<script>
+  function reportHeight() {
+    var h = document.body.scrollHeight;
+    parent.postMessage({ type: 'engine-height', height: h }, '*');
+  }
+  window.addEventListener('load', function() { reportHeight(); setTimeout(reportHeight, 400); });
+  window.addEventListener('resize', reportHeight);
+  new ResizeObserver(reportHeight).observe(document.body);
+</script>
+</body>
+</html>
