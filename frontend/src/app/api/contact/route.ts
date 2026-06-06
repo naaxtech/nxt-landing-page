@@ -1,6 +1,16 @@
 import { Resend } from "resend"
 import { NextRequest, NextResponse } from "next/server"
 
+const esc = (s: unknown) =>
+  String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 export async function POST(req: NextRequest) {
   const apiKey = process.env.RESEND_API_KEY
   if (!apiKey) {
@@ -16,6 +26,10 @@ export async function POST(req: NextRequest) {
 
   if (!name || !email || !company || !message) {
     return NextResponse.json({ ok: false, error: "Missing required fields" }, { status: 400 })
+  }
+
+  if (!EMAIL_RE.test(String(email))) {
+    return NextResponse.json({ ok: false, error: "Invalid email address" }, { status: 400 })
   }
 
   // Cloudflare Turnstile verification (only enforced when secret key is configured)
@@ -41,26 +55,28 @@ export async function POST(req: NextRequest) {
     unsure: "Not sure yet",
   }
 
+  const safeTier = esc(tierLabel[String(tier)] ?? tier)
+
   try {
     await resend.emails.send({
       from: FROM,
       to: TO,
-      replyTo: email,
-      subject: `Partnership Inquiry — ${company} (${tierLabel[tier] ?? tier})`,
+      replyTo: String(email),
+      subject: `Partnership Inquiry — ${esc(company)} (${safeTier})`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; color: #111;">
           <h2 style="margin: 0 0 24px; font-size: 20px;">New Partnership Inquiry</h2>
           <table style="width: 100%; border-collapse: collapse;">
-            <tr><td style="padding: 8px 0; color: #666; width: 140px;">Name</td><td style="padding: 8px 0; font-weight: 600;">${name}</td></tr>
-            <tr><td style="padding: 8px 0; color: #666;">Email</td><td style="padding: 8px 0;">${email}</td></tr>
-            <tr><td style="padding: 8px 0; color: #666;">Company</td><td style="padding: 8px 0; font-weight: 600;">${company}</td></tr>
-            <tr><td style="padding: 8px 0; color: #666;">Country</td><td style="padding: 8px 0;">${country ?? "—"}</td></tr>
-            <tr><td style="padding: 8px 0; color: #666;">Tier</td><td style="padding: 8px 0;">${tierLabel[tier] ?? tier}</td></tr>
-            ${referral ? `<tr><td style="padding: 8px 0; color: #666;">Source</td><td style="padding: 8px 0;">${referral}</td></tr>` : ""}
+            <tr><td style="padding: 8px 0; color: #666; width: 140px;">Name</td><td style="padding: 8px 0; font-weight: 600;">${esc(name)}</td></tr>
+            <tr><td style="padding: 8px 0; color: #666;">Email</td><td style="padding: 8px 0;">${esc(email)}</td></tr>
+            <tr><td style="padding: 8px 0; color: #666;">Company</td><td style="padding: 8px 0; font-weight: 600;">${esc(company)}</td></tr>
+            <tr><td style="padding: 8px 0; color: #666;">Country</td><td style="padding: 8px 0;">${esc(country ?? "—")}</td></tr>
+            <tr><td style="padding: 8px 0; color: #666;">Tier</td><td style="padding: 8px 0;">${safeTier}</td></tr>
+            ${referral ? `<tr><td style="padding: 8px 0; color: #666;">Source</td><td style="padding: 8px 0;">${esc(referral)}</td></tr>` : ""}
           </table>
           <hr style="margin: 24px 0; border: none; border-top: 1px solid #eee;" />
           <p style="color: #666; margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em;">Message</p>
-          <p style="white-space: pre-wrap; line-height: 1.7;">${message}</p>
+          <p style="white-space: pre-wrap; line-height: 1.7;">${esc(message)}</p>
         </div>
       `,
     })
