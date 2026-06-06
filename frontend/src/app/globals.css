@@ -1299,3 +1299,88 @@ footer {
   .tab-intro, .exhibits, .sys-embed-wrap { padding-left: 18px; padding-right: 18px; }
   .globe-hint, .globe-watermark { left: 18px; }
 }
+
+/* ══════════════════════════════════════════
+   THEME TOGGLE BUTTON
+══════════════════════════════════════════ */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--gray);
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0;
+  transition: border-color 0.2s, color 0.2s, transform 0.25s;
+}
+.theme-toggle:hover {
+  border-color: var(--yellow);
+  color: var(--yellow);
+  transform: rotate(20deg);
+}
+.theme-toggle-placeholder { width: 34px; height: 34px; flex-shrink: 0; }
+
+/* ══════════════════════════════════════════
+   LIGHT MODE
+   Overrides design tokens and hardcoded
+   dark values for [data-theme="light"]
+══════════════════════════════════════════ */
+
+/* Smooth body transition when switching */
+body { transition: background-color 0.2s ease, color 0.2s ease; }
+
+[data-theme="light"] {
+  /* ── Design tokens ── */
+  --black:         #f8f8f8;
+  --surface:       #efefef;
+  --card:          #e6e6e6;
+  --border:        #dedede;
+  --border-bright: #c6c6c6;
+  --white:         #111111;
+  --gray:          #555555;
+  --gray-dim:      #8a8a8a;
+  --yellow-dim:    rgba(245,200,66,0.18);
+  --yellow-glow:   rgba(245,200,66,0.09);
+
+  /* ── Shadcn / Tailwind tokens ── */
+  --background:          oklch(0.97 0 0);
+  --foreground:          oklch(0.09 0 0);
+  --secondary:           oklch(0.95 0 0);
+  --secondary-foreground:oklch(0.2  0 0);
+  --muted:               oklch(0.93 0 0);
+  --muted-foreground:    oklch(0.45 0 0);
+  --accent:              oklch(0.90 0 0);
+  --accent-foreground:   oklch(0.09 0 0);
+  --border-token:        oklch(0.88 0 0);
+  --input:               oklch(0.88 0 0);
+}
+
+/* ── Nav: hardcoded rgba backgrounds ── */
+[data-theme="light"] nav#navbar        { background: rgba(248,248,248,0.92); }
+[data-theme="light"] nav#navbar.scrolled { background: rgba(255,255,255,0.96); }
+[data-theme="light"] .nav-mobile       { background: rgba(248,248,248,0.98); }
+[data-theme="light"] .lab-nav          { background: rgba(248,248,248,0.92); }
+
+/* ── Scrollbar ── */
+[data-theme="light"] ::-webkit-scrollbar-track { background: #f0f0f0; }
+
+/* ── Text on yellow backgrounds must stay dark ──
+   --black becomes #f8f8f8 in light mode, making
+   these near-white — override to true black.      */
+[data-theme="light"] .btn-primary,
+[data-theme="light"] .nav-cta,
+[data-theme="light"] .nav-mobile-cta,
+[data-theme="light"] .form-submit,
+[data-theme="light"] .founding-badge,
+[data-theme="light"] .p-featured-badge,
+[data-theme="light"] .p-period-tab.active,
+[data-theme="light"] .lab-tabs button.on { color: #000000 !important; }
+
+/* ── Hover/active backgrounds that were hardcoded dark ── */
+[data-theme="light"] .lane-card:hover              { background: #dcdcdc; }
+[data-theme="light"] .p-price-card.featured        { background: #f4f4f4; }
+[data-theme="light"] .p-period-tab:hover           { background: rgba(0,0,0,0.05); }
+[data-theme="light"] .p-value-total                { background: rgba(0,0,0,0.03); }
+[data-theme="light"] .inclusions-table tr:hover td { background: rgba(0,0,0,0.04); }
+
+/* ── Lab signal panel ── */
+[data-theme="light"] .signal { background: rgba(240,240,240,0.92); }

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { TextScramble } from "@/components/ui/text-scramble"
 import { RippleLink } from "@/components/ui/ripple-link"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
 
 const NAV_LINKS = [
   { label: "Services", href: "/#solution" },
@@ -49,6 +50,7 @@ export function Nav() {
               />
             </Link>
           </li>
+          <li><ThemeToggle /></li>
           <li><RippleLink href="/partner/" className="nav-cta">Partner With Us</RippleLink></li>
         </ul>
 
@@ -74,6 +76,7 @@ export function Nav() {
             LinkedIn
           </a>
         </li>
+        <li style={{ paddingTop: 8 }}><ThemeToggle /></li>
       </ul>
     </>
   )
