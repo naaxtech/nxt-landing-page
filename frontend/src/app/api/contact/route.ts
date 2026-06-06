@@ -57,28 +57,104 @@ export async function POST(req: NextRequest) {
 
   const safeTier = esc(tierLabel[String(tier)] ?? tier)
 
+  const row = (label: string, value: string) => `
+    <tr>
+      <td style="padding:12px 16px;font-family:'Courier New',Courier,monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#666;white-space:nowrap;width:130px;border-bottom:1px solid #1e1e1e;">${label}</td>
+      <td style="padding:12px 16px;font-size:14px;color:#ffffff;border-bottom:1px solid #1e1e1e;">${value}</td>
+    </tr>`
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"></head>
+<body style="margin:0;padding:0;background:#000000;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#000000;padding:40px 16px;">
+  <tr><td align="center">
+    <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+      <!-- Header -->
+      <tr><td style="background:#000000;padding:0 0 0 0;">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr><td style="background:#F5C842;height:3px;font-size:0;line-height:0;">&nbsp;</td></tr>
+          <tr><td style="background:#0a0a0a;padding:28px 32px;border-left:1px solid #1e1e1e;border-right:1px solid #1e1e1e;">
+            <table cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;font-size:22px;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;">
+                  <span style="color:#ffffff;">NAAX</span><span style="color:#F5C842;">TECH</span>
+                </td>
+                <td style="padding-left:20px;">
+                  <span style="display:inline-block;background:#F5C84220;border:1px solid #F5C84260;padding:4px 10px;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:#F5C842;">NEW INQUIRY</span>
+                </td>
+              </tr>
+            </table>
+          </td></tr>
+        </table>
+      </td></tr>
+
+      <!-- Body -->
+      <tr><td style="background:#0d0d0d;border-left:1px solid #1e1e1e;border-right:1px solid #1e1e1e;padding:0;">
+
+        <!-- Lead row -->
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+          <tr>
+            <td colspan="2" style="padding:24px 32px 16px;border-bottom:1px solid #1e1e1e;">
+              <p style="margin:0;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#666;">Partnership Application</p>
+              <p style="margin:6px 0 0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:-0.01em;">${esc(name)}</p>
+              <p style="margin:2px 0 0;font-size:14px;color:#888;">${esc(company)}${country ? ` &nbsp;·&nbsp; ${esc(country)}` : ""}</p>
+            </td>
+          </tr>
+          ${row("Email", `<a href="mailto:${esc(email)}" style="color:#F5C842;text-decoration:none;">${esc(email)}</a>`)}
+          ${row("Tier", safeTier)}
+          ${referral ? row("Source", esc(referral)) : ""}
+        </table>
+
+        <!-- Message -->
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr><td style="padding:24px 32px 8px;">
+            <p style="margin:0 0 12px;font-family:'Courier New',Courier,monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#666;">Message</p>
+            <p style="margin:0;font-size:15px;color:#cccccc;line-height:1.75;white-space:pre-wrap;">${esc(message)}</p>
+          </td></tr>
+        </table>
+
+        <!-- Reply CTA -->
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr><td style="padding:24px 32px 32px;">
+            <table cellpadding="0" cellspacing="0">
+              <tr><td style="background:#F5C842;padding:14px 28px;">
+                <a href="mailto:${esc(email)}" style="font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#000000;text-decoration:none;font-weight:700;">Reply to ${esc(name)} &rarr;</a>
+              </td></tr>
+            </table>
+          </td></tr>
+        </table>
+
+      </td></tr>
+
+      <!-- Footer -->
+      <tr><td style="background:#000000;border:1px solid #1e1e1e;border-top:none;padding:20px 32px;">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="font-family:'Courier New',Courier,monospace;font-size:10px;letter-spacing:0.1em;color:#444;">
+              <span style="color:#ffffff;">NAAX</span><span style="color:#F5C842;">TECH</span> &nbsp;·&nbsp; naaxtech.com
+            </td>
+            <td align="right" style="font-family:'Courier New',Courier,monospace;font-size:10px;letter-spacing:0.08em;color:#333;">
+              Partnership Inquiry
+            </td>
+          </tr>
+        </table>
+      </td></tr>
+
+    </table>
+  </td></tr>
+</table>
+</body>
+</html>`
+
   try {
     await resend.emails.send({
       from: FROM,
       to: TO,
       replyTo: String(email),
-      subject: `Partnership Inquiry — ${esc(company)} (${safeTier})`,
-      html: `
-        <div style="font-family: sans-serif; max-width: 600px; color: #111;">
-          <h2 style="margin: 0 0 24px; font-size: 20px;">New Partnership Inquiry</h2>
-          <table style="width: 100%; border-collapse: collapse;">
-            <tr><td style="padding: 8px 0; color: #666; width: 140px;">Name</td><td style="padding: 8px 0; font-weight: 600;">${esc(name)}</td></tr>
-            <tr><td style="padding: 8px 0; color: #666;">Email</td><td style="padding: 8px 0;">${esc(email)}</td></tr>
-            <tr><td style="padding: 8px 0; color: #666;">Company</td><td style="padding: 8px 0; font-weight: 600;">${esc(company)}</td></tr>
-            <tr><td style="padding: 8px 0; color: #666;">Country</td><td style="padding: 8px 0;">${esc(country ?? "—")}</td></tr>
-            <tr><td style="padding: 8px 0; color: #666;">Tier</td><td style="padding: 8px 0;">${safeTier}</td></tr>
-            ${referral ? `<tr><td style="padding: 8px 0; color: #666;">Source</td><td style="padding: 8px 0;">${esc(referral)}</td></tr>` : ""}
-          </table>
-          <hr style="margin: 24px 0; border: none; border-top: 1px solid #eee;" />
-          <p style="color: #666; margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em;">Message</p>
-          <p style="white-space: pre-wrap; line-height: 1.7;">${esc(message)}</p>
-        </div>
-      `,
+      subject: `New Inquiry — ${esc(name)} · ${esc(company)} (${safeTier})`,
+      html,
     })
     return NextResponse.json({ ok: true })
   } catch {
