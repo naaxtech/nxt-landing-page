@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from "react"
 
 const LAYERS = [
   { num: "LAYER 01", title: "Business Input", tag: "Goals → Requirements → Architecture" },
-  { num: "LAYER 02", title: "Automation Core", tag: "n8n · AI Agents · Workflows" },
-  { num: "LAYER 03", title: "Delivery Layer", tag: "Apps · APIs · Dashboards" },
-  { num: "LAYER 04", title: "Data & Infrastructure", tag: "Cloud · Supabase · VPS" },
-  { num: "LAYER 05", title: "Monitoring", tag: "Cattr · Syncthing · Alerts" },
+  { num: "LAYER 02", title: "Automation Core", tag: "Workflows · AI Agents · Integrations" },
+  { num: "LAYER 03", title: "Delivery Layer", tag: "Apps · Dashboards · Customer Touchpoints" },
+  { num: "LAYER 04", title: "Data & Infrastructure", tag: "Cloud · Database · Storage" },
+  { num: "LAYER 05", title: "Monitoring", tag: "Uptime · Alerts · Performance" },
   { num: "OUTPUT", title: "Scaled Operations", tag: "Your business, running faster", accent: true },
 ]
 
@@ -76,20 +76,19 @@ export function ProofSection() {
 
   return (
     <>
-      {/* Lane reveal observer target — attached to Solution section's lanes */}
       <div ref={lanesRef} style={{ display: "none" }} />
 
       <section id="proof" ref={sectionRef}>
         <div className="section-inner">
           <div className="proof-top">
             <div className="reveal">
-              <div className="section-label">Visual Proof</div>
+              <div className="section-label">How It Works</div>
               <h2 className="proof-headline">A System, Not a Service.</h2>
             </div>
             <div className="reveal reveal-delay-2">
               <p className="proof-desc">
-                Every Naaxtech engagement runs through a proprietary execution engine — n8n automation core,
-                dedicated app accounts, and real-time orchestration. You own the outcomes. We own the machine.
+                Every Naaxtech engagement runs through a purpose-built execution engine — automated workflows,
+                dedicated tooling, and real-time oversight. You own the outcomes. We own the machine.
               </p>
             </div>
           </div>
@@ -125,11 +124,11 @@ export function ProofSection() {
             <div className="counter-strip">
               <div className="counter-cell">
                 <div className="counter-val">{c1}<span className="unit">%</span></div>
-                <div className="counter-lbl">Ops Time Recovered</div>
+                <div className="counter-lbl">Operations Time Recovered</div>
               </div>
               <div className="counter-cell">
                 <div className="counter-val">{c2}<span className="unit">x</span></div>
-                <div className="counter-lbl">Faster Than Hiring</div>
+                <div className="counter-lbl">Faster Than Hiring In-House</div>
               </div>
               <div className="counter-cell">
                 <div className="counter-val">{c3}<span className="unit">%</span></div>

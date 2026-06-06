@@ -1096,6 +1096,39 @@ footer {
 }
 
 /* ══════════════════════════════════════════
+   LAB TEASER — landing page section
+══════════════════════════════════════════ */
+#lab-teaser {
+  padding: 120px 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(245,200,66,0.025) 50%, transparent 100%);
+  position: relative; z-index: 1;
+}
+#lab-teaser::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  pointer-events: none;
+}
+.lab-teaser-inner {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 24px;
+  max-width: 600px;
+}
+.lab-teaser-headline {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1.0; letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+.lab-teaser-sub {
+  font-size: 16px; color: var(--gray); line-height: 1.7; max-width: 480px;
+}
+@media (max-width: 768px) {
+  #lab-teaser { padding: 72px 0; }
+  .lab-teaser-headline { font-size: clamp(28px, 8vw, 48px); }
+}
+
+/* ══════════════════════════════════════════
    THE LAB — /lab page
 ══════════════════════════════════════════ */
 

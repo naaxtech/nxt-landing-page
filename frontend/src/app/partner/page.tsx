@@ -6,7 +6,7 @@ import { Layers, Zap, Globe } from "lucide-react"
 import { Nav } from "@/components/nav"
 import { RippleLink } from "@/components/ui/ripple-link"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL
+const API_URL = "/api/contact"
 
 // ─── Pricing ──────────────────────────────────────────────────────────────────
 type Period = "monthly" | "yearly" | "founding"
@@ -145,7 +145,7 @@ export default function PartnerPage() {
     setStatus("sending")
     const data = Object.fromEntries(new FormData(e.currentTarget))
     try {
-      const res = await fetch(`${API_URL}/contact`, {
+      const res = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -409,21 +409,6 @@ export default function PartnerPage() {
                   no sales team.
                 </p>
               </div>
-            ) : !API_URL ? (
-              <div style={{ textAlign: "center", padding: "48px 24px" }}>
-                <p style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.1em", color: "var(--yellow)", textTransform: "uppercase", marginBottom: 16 }}>
-                  Form Setup Required
-                </p>
-                <p style={{ color: "var(--gray)", fontSize: 14, lineHeight: 1.7 }}>
-                  Deploy <code style={{ color: "var(--white)", background: "var(--surface)", padding: "2px 6px" }}>api/</code> on Coolify and set{" "}
-                  <code style={{ color: "var(--white)", background: "var(--surface)", padding: "2px 6px" }}>NEXT_PUBLIC_API_URL</code> in GitHub Secrets.
-                </p>
-                <div style={{ marginTop: 24 }}>
-                  <a href="mailto:hello@naaxtech.com?subject=Partnership Inquiry" className="btn-primary" style={{ textDecoration: "none" }}>
-                    Email Us Directly
-                  </a>
-                </div>
-              </div>
             ) : (
               <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
                 <div className="form-grid">
@@ -497,7 +482,7 @@ export default function PartnerPage() {
         <Link href="/" className="footer-logo">
           <span className="naax">NAAX</span><span className="tech">TECH</span>
         </Link>
-        <span className="footer-copy">© 2025 Naaxtech. Technology · Marketing · Innovation.</span>
+        <span className="footer-copy">© 2026 Naaxtech. Operations · Revenue · Growth.</span>
         <ul className="footer-links">
           <li><Link href="/">Home</Link></li>
           <li><a href="mailto:hello@naaxtech.com">hello@naaxtech.com</a></li>

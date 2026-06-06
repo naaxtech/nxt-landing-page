@@ -6,9 +6,9 @@ import { TextScramble } from "@/components/ui/text-scramble"
 import { RippleLink } from "@/components/ui/ripple-link"
 
 const TAGS = [
-  "Technology · Revenue Marketing · Innovation",
-  "Systems that run it. Growth that compounds it.",
-  "Subscribe to a team that builds and grows — not just delivers.",
+  "Operations · Revenue · Growth",
+  "Your team, without the payroll.",
+  "Systems that run. Revenue that compounds.",
 ]
 
 export function HeroSection() {
@@ -71,8 +71,8 @@ export function HeroSection() {
         </h1>
 
         <p className="hero-sub">
-          Naaxtech is your <strong>technology execution team</strong> — without the overhead of hiring one.
-          We build the systems, drive the growth, and execute the strategy <strong>that makes your business compound</strong>.
+          Naaxtech is your <strong>dedicated execution team</strong> — without the cost of building one.
+          We streamline your operations, grow your revenue, and <strong>make every part of your business work together</strong>.
         </p>
 
         <div className="hero-actions">
@@ -86,13 +86,13 @@ export function HeroSection() {
 
       <div className="hero-metrics">
         <div className="metric-item">
-          <div className="metric-num"><span>5</span> Lanes</div>
-          <div className="metric-label">Execution disciplines</div>
+          <div className="metric-num"><span>5</span> Disciplines</div>
+          <div className="metric-label">Operations to revenue</div>
         </div>
         <div className="metric-divider" />
         <div className="metric-item">
           <div className="metric-num">1<span>x</span> Flat Rate</div>
-          <div className="metric-label">Subscription model</div>
+          <div className="metric-label">One subscription, everything</div>
         </div>
         <div className="metric-divider" />
         <div className="metric-item">

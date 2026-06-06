@@ -13,8 +13,26 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Naaxtech — Technology Execution Partner",
-  description: "We build the systems that make your operations run. Automation, ERP, AI, Infrastructure, Growth — executed end to end.",
+  title: "Naaxtech — Your Technology Execution Partner",
+  description: "One team that runs your operations, grows your revenue, and makes every part of your business work together. No agencies, no fragmented freelancers — just results.",
+  metadataBase: new URL("https://naaxtech.com"),
+  openGraph: {
+    title: "Naaxtech — Your Technology Execution Partner",
+    description: "One team that runs your operations, grows your revenue, and makes every part of your business work together.",
+    url: "https://naaxtech.com",
+    siteName: "Naaxtech",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Naaxtech — Your Technology Execution Partner",
+    description: "One team that runs your operations, grows your revenue, and makes every part of your business work together.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
