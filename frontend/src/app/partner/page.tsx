@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, type FormEvent } from "react"
+import Script from "next/script"
 import Link from "next/link"
 import { Layers, Zap, Globe } from "lucide-react"
 import { Nav } from "@/components/nav"
@@ -129,10 +130,14 @@ function PriceDisplay({ tier, period }: { tier: Tier; period: Period }) {
   )
 }
 
+const TURNSTILE_SITE_KEY =
+  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "1x00000000000000000000AA"
+
 export default function PartnerPage() {
   const [period, setPeriod] = useState<Period>("founding")
   const [selectedTier, setSelectedTier] = useState("growth")
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle")
+  const [errorMessage, setErrorMessage] = useState("")
 
   const scrollApply = (tierId: string) => {
     setSelectedTier(tierId)
@@ -151,14 +156,24 @@ export default function PartnerPage() {
         body: JSON.stringify(data),
       })
       const json = await res.json()
-      setStatus(json.ok ? "sent" : "error")
+      if (json.ok) {
+        setStatus("sent")
+      } else {
+        setErrorMessage(json.error ?? "Something went wrong.")
+        setStatus("error")
+      }
     } catch {
+      setErrorMessage("Something went wrong. Email us at hello@naaxtech.com")
       setStatus("error")
     }
   }
 
   return (
     <div className="partner-page">
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        strategy="lazyOnload"
+      />
       <div className="scanline" />
       <div className="grid-overlay" />
       <Nav />
@@ -431,6 +446,26 @@ export default function PartnerPage() {
                     <input className="form-input" id="country" name="country" type="text" required placeholder="United States" />
                   </div>
                 </div>
+                <div className="form-grid">
+                  <div className="form-field">
+                    <label className="form-label" htmlFor="position">Your Position / Title</label>
+                    <input className="form-input" id="position" name="position" type="text" placeholder="CEO, Founder, Head of Ops…" />
+                  </div>
+                  <div className="form-field">
+                    <label className="form-label" htmlFor="phone">Phone Number</label>
+                    <input className="form-input" id="phone" name="phone" type="tel" placeholder="+1 234 567 8900" />
+                  </div>
+                </div>
+                <div className="form-grid">
+                  <div className="form-field">
+                    <label className="form-label" htmlFor="website">Website</label>
+                    <input className="form-input" id="website" name="website" type="url" placeholder="https://yourcompany.com" />
+                  </div>
+                  <div className="form-field">
+                    <label className="form-label" htmlFor="linkedin">LinkedIn</label>
+                    <input className="form-input" id="linkedin" name="linkedin" type="url" placeholder="https://linkedin.com/in/yourprofile" />
+                  </div>
+                </div>
                 <div className="form-field">
                   <label className="form-label" htmlFor="tier">Tier of Interest *</label>
                   <select
@@ -460,9 +495,15 @@ export default function PartnerPage() {
                   <label className="form-label" htmlFor="referral">How did you find us?</label>
                   <input className="form-input" id="referral" name="referral" type="text" placeholder="Referral, LinkedIn, search…" />
                 </div>
+                <div
+                  className="cf-turnstile"
+                  data-sitekey={TURNSTILE_SITE_KEY}
+                  data-theme="dark"
+                  data-response-field="token"
+                />
                 {status === "error" && (
                   <p style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "#ff6b6b", letterSpacing: "0.08em" }}>
-                    Something went wrong. Email us at hello@naaxtech.com
+                    {errorMessage}
                   </p>
                 )}
                 <button type="submit" className="form-submit" disabled={status === "sending"}>

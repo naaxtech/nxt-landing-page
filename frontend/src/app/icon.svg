@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" fill="#000000"/>
+  <text
+    x="50"
+    y="50"
+    text-anchor="middle"
+    dominant-baseline="central"
+    font-family="Arial Black, 'Arial Bold', Gadget, sans-serif"
+    font-weight="900"
+    font-size="38"
+    letter-spacing="-1"
+  >
+    <tspan fill="#ffffff">NX</tspan><tspan fill="#F5C842">T</tspan>
+  </text>
+</svg>

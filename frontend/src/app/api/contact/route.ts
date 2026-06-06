@@ -11,6 +11,29 @@ const esc = (s: unknown) =>
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+const MAX_LENGTHS: Record<string, number> = {
+  name: 100,
+  email: 200,
+  company: 200,
+  country: 100,
+  position: 100,
+  phone: 30,
+  tier: 50,
+  message: 5000,
+  referral: 500,
+  website: 500,
+  linkedin: 500,
+}
+
+function isHttpUrl(url: string): boolean {
+  try {
+    const u = new URL(url)
+    return u.protocol === "http:" || u.protocol === "https:"
+  } catch {
+    return false
+  }
+}
+
 export async function POST(req: NextRequest) {
   const apiKey = process.env.RESEND_API_KEY
   if (!apiKey) {
@@ -22,20 +45,29 @@ export async function POST(req: NextRequest) {
   const TO = process.env.CONTACT_TO_EMAIL ?? "hello@naaxtech.com"
 
   const body = await req.json()
-  const { name, email, company, country, tier, message, referral, token } = body
+  const { name, email, company, country, position, phone, tier, message, referral, website, linkedin, token } = body
 
+  // Required field validation
   if (!name || !email || !company || !message) {
     return NextResponse.json({ ok: false, error: "Missing required fields" }, { status: 400 })
+  }
+
+  // Field length validation
+  for (const [field, max] of Object.entries(MAX_LENGTHS)) {
+    const val = body[field]
+    if (val && String(val).length > max) {
+      return NextResponse.json({ ok: false, error: `${field} is too long` }, { status: 400 })
+    }
   }
 
   if (!EMAIL_RE.test(String(email))) {
     return NextResponse.json({ ok: false, error: "Invalid email address" }, { status: 400 })
   }
 
-  // Cloudflare Turnstile verification (only enforced when secret key is configured)
+  // Cloudflare Turnstile verification (enforced when secret key is configured)
   if (process.env.TURNSTILE_SECRET_KEY) {
     if (!token) {
-      return NextResponse.json({ ok: false, error: "Bot verification required" }, { status: 400 })
+      return NextResponse.json({ ok: false, error: "Please complete the security check" }, { status: 400 })
     }
     const check = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
       method: "POST",
@@ -44,7 +76,7 @@ export async function POST(req: NextRequest) {
     })
     const result = await check.json()
     if (!result.success) {
-      return NextResponse.json({ ok: false, error: "Bot verification failed" }, { status: 400 })
+      return NextResponse.json({ ok: false, error: "Security check failed — please try again" }, { status: 400 })
     }
   }
 
@@ -56,12 +88,18 @@ export async function POST(req: NextRequest) {
   }
 
   const safeTier = esc(tierLabel[String(tier)] ?? tier)
+  const safeWebsite = website && isHttpUrl(String(website)) ? String(website) : null
+  const safeLinkedin = linkedin && isHttpUrl(String(linkedin)) ? String(linkedin) : null
 
   const field = (label: string, value: string) => `
     <tr>
       <td style="padding:10px 0;width:110px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#999;vertical-align:top;border-bottom:1px solid #f0f0f0;">${label}</td>
       <td style="padding:10px 0 10px 16px;font-size:14px;color:#111;border-bottom:1px solid #f0f0f0;">${value}</td>
     </tr>`
+
+  const subhead = [position ? esc(position) : null, esc(company), country ? esc(country) : null]
+    .filter(Boolean)
+    .join(" &nbsp;&middot;&nbsp; ")
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -92,25 +130,21 @@ export async function POST(req: NextRequest) {
     <!-- Lead -->
     <p style="margin:0 0 4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#999;">Partnership Application</p>
     <p style="margin:0 0 2px;font-size:22px;font-weight:700;color:#111;letter-spacing:-0.01em;">${esc(name)}</p>
-    <p style="margin:0 0 24px;font-size:14px;color:#666;">${esc(company)}${country ? ` &nbsp;&middot;&nbsp; ${esc(country)}` : ""}</p>
+    <p style="margin:0 0 24px;font-size:14px;color:#666;">${subhead}</p>
 
     <!-- Fields -->
     <table width="100%" cellpadding="0" cellspacing="0">
       ${field("Email", `<a href="mailto:${esc(email)}" style="color:#111;text-decoration:none;font-weight:500;">${esc(email)}</a>`)}
+      ${phone ? field("Phone", `<a href="tel:${esc(phone)}" style="color:#111;text-decoration:none;">${esc(phone)}</a>`) : ""}
       ${field("Tier", safeTier)}
+      ${safeWebsite ? field("Website", `<a href="${esc(safeWebsite)}" style="color:#111;text-decoration:none;" target="_blank">${esc(safeWebsite)}</a>`) : ""}
+      ${safeLinkedin ? field("LinkedIn", `<a href="${esc(safeLinkedin)}" style="color:#111;text-decoration:none;" target="_blank">${esc(safeLinkedin)}</a>`) : ""}
       ${referral ? field("Source", esc(referral)) : ""}
     </table>
 
     <!-- Message -->
     <p style="margin:24px 0 8px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#999;">Message</p>
     <p style="margin:0;font-size:15px;color:#333;line-height:1.75;white-space:pre-wrap;padding:20px;background:#f9f9f9;border-left:3px solid #F5C842;">${esc(message)}</p>
-
-    <!-- CTA -->
-    <table cellpadding="0" cellspacing="0" style="margin-top:24px;">
-      <tr><td style="background:#111111;padding:13px 24px;">
-        <a href="mailto:${esc(email)}" style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#F5C842;text-decoration:none;">Reply to ${esc(name)} &rarr;</a>
-      </td></tr>
-    </table>
 
   </td></tr>
 
