@@ -1140,14 +1140,9 @@ footer {
   border-bottom: 1px solid var(--border);
   background: rgba(0,0,0,.78); backdrop-filter: blur(14px);
 }
-.lab-brand {
-  font-family: var(--font-display); font-weight: 900; font-size: 19px;
-  letter-spacing: .06em; text-transform: uppercase;
-  display: flex; align-items: center; gap: 10px;
-}
-.lab-brand .t  { color: var(--yellow); }
-.lab-brand .div { width: 1px; height: 18px; background: var(--border-bright); }
-.lab-brand .lab { font-family: var(--font-mono); font-size: 11px; letter-spacing: .24em; color: var(--gray); font-weight: 400; }
+.lab-brand { display: flex; align-items: center; gap: 10px; }
+.lab-brand-sep { width: 1px; height: 18px; background: var(--border-bright); }
+.lab-brand-sub { font-family: var(--font-mono); font-size: 11px; letter-spacing: .24em; color: var(--gray); font-weight: 400; text-transform: uppercase; }
 .lab-tabs { display: flex; border: 1px solid var(--border-bright); }
 .lab-tabs button {
   font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em;
@@ -1336,8 +1331,9 @@ body { transition: background-color 0.2s ease, color 0.2s ease; }
   --border:        #dedede;
   --border-bright: #c6c6c6;
   --white:         #111111;
+  --yellow:        #8a6300;
   --gray:          #555555;
-  --gray-dim:      #8a8a8a;
+  --gray-dim:      #606060;
   --yellow-dim:    rgba(245,200,66,0.18);
   --yellow-glow:   rgba(245,200,66,0.09);
 
@@ -1382,5 +1378,34 @@ body { transition: background-color 0.2s ease, color 0.2s ease; }
 [data-theme="light"] .p-value-total                { background: rgba(0,0,0,0.03); }
 [data-theme="light"] .inclusions-table tr:hover td { background: rgba(0,0,0,0.04); }
 
-/* ── Lab signal panel ── */
-[data-theme="light"] .signal { background: rgba(240,240,240,0.92); }
+/* ── Lab canvas sections: kept dark — globe/exhibit animations require dark backgrounds ── */
+[data-theme="light"] .globe-stage          { background: #040404; }
+[data-theme="light"] .signal               { background: rgba(10,10,10,0.95); }
+[data-theme="light"] .sig-hub              { color: #ffffff; }
+[data-theme="light"] .sig-line             { color: #dddddd; }
+[data-theme="light"] .sig-coords           { color: #888888; }
+[data-theme="light"] .sig-domain           { color: #888888; border-color: #2a2a2a; }
+[data-theme="light"] .sig-index            { color: #555555; }
+[data-theme="light"] .sig-meter-lab        { color: #555555; }
+[data-theme="light"] .sig-foot             { color: #555555; }
+[data-theme="light"] .sig-bar              { background: #2a2a2a; }
+[data-theme="light"] .globe-hint           { color: #555555; }
+[data-theme="light"] .globe-watermark      { color: #555555; }
+[data-theme="light"] .ticker               { background: #0f0f0f; border-color: #2a2a2a; }
+[data-theme="light"] .ticker-item          { color: #888888; }
+[data-theme="light"] .exhibits             { background: #050505; border-color: #1e1e1e; }
+[data-theme="light"] .ex-grid              { background: #2a2a2a; border-color: #2a2a2a; }
+[data-theme="light"] .ex                   { background: #111111; }
+[data-theme="light"] .ex-canvas            { background: #000000; border-color: #2a2a2a; }
+[data-theme="light"] .ex-name              { color: #ffffff; }
+[data-theme="light"] .ex-desc              { color: #888888; }
+
+/* ── CTA/badge backgrounds must stay bright yellow (--yellow is now #8a6300 in light mode) ── */
+[data-theme="light"] .btn-primary,
+[data-theme="light"] .nav-cta,
+[data-theme="light"] .nav-mobile-cta,
+[data-theme="light"] .form-submit,
+[data-theme="light"] .founding-badge,
+[data-theme="light"] .p-featured-badge,
+[data-theme="light"] .p-period-tab.active,
+[data-theme="light"] .lab-tabs button.on   { background: #F5C842 !important; }

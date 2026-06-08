@@ -325,9 +325,11 @@ export default function LabPage() {
 
       <header className="lab-nav">
         <div className="lab-brand">
-          NAAX<span className="t">TECH</span>
-          <span className="div" />
-          <span className="lab">THE LAB</span>
+          <Link href="/" className="nav-logo">
+            <span className="naax">NAAX</span><span className="tech">TECH</span>
+          </Link>
+          <span className="lab-brand-sep" />
+          <span className="lab-brand-sub">THE LAB</span>
         </div>
         <div className="lab-tabs">
           <button className={tab === "immerse" ? "on" : ""} onClick={() => switchTab("immerse")}>Immerse</button>

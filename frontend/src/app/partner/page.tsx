@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, type FormEvent } from "react"
+import { useState, useEffect, type FormEvent } from "react"
+import { useTheme } from "next-themes"
 import Script from "next/script"
 import Link from "next/link"
 import { Layers, Zap, Globe } from "lucide-react"
@@ -130,14 +131,16 @@ function PriceDisplay({ tier, period }: { tier: Tier; period: Period }) {
   )
 }
 
-const TURNSTILE_SITE_KEY =
-  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "1x00000000000000000000AA"
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 
 export default function PartnerPage() {
   const [period, setPeriod] = useState<Period>("founding")
   const [selectedTier, setSelectedTier] = useState("growth")
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle")
   const [errorMessage, setErrorMessage] = useState("")
+  const { theme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
 
   const scrollApply = (tierId: string) => {
     setSelectedTier(tierId)
@@ -495,12 +498,14 @@ export default function PartnerPage() {
                   <label className="form-label" htmlFor="referral">How did you find us?</label>
                   <input className="form-input" id="referral" name="referral" type="text" placeholder="Referral, LinkedIn, search…" />
                 </div>
-                <div
-                  className="cf-turnstile"
-                  data-sitekey={TURNSTILE_SITE_KEY}
-                  data-theme="dark"
-                  data-response-field="token"
-                />
+                {TURNSTILE_SITE_KEY && (
+                  <div
+                    className="cf-turnstile"
+                    data-sitekey={TURNSTILE_SITE_KEY}
+                    data-theme={mounted ? (theme === "dark" ? "dark" : "light") : "dark"}
+                    data-response-field="token"
+                  />
+                )}
                 {status === "error" && (
                   <p style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "#ff6b6b", letterSpacing: "0.08em" }}>
                     {errorMessage}
