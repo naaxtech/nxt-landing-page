@@ -1,0 +1,26 @@
+frontend/src/components/nav.tsx
+  s_4638d2b97f4e0d::t_fc16c2c15da4b0 45-52
+  s_4638d2b97f4e0d::t_c5698b0d3bcdf7 80
+frontend/src/app/page.tsx
+  s_4638d2b97f4e0d::t_97e5235e24ac78 243-260
+frontend/src/app/nerp/page.tsx
+  s_4638d2b97f4e0d::t_c6f3a542244c27 1-284
+frontend/src/app/globals.css
+  s_4638d2b97f4e0d::t_1721441e9168c3 1412-1532
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "15f3f23986a33bacfa4c20ec55a76a86405e97d9",
+  "prompts": {},
+  "sessions": {
+    "s_4638d2b97f4e0d": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "bc6fc726-e8aa-433e-af58-70e4d310e7ec",
+        "model": "default"
+      },
+      "human_author": "Naaxtech <naaxtech.official@gmail.com>"
+    }
+  }
+}
