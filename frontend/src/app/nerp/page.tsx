@@ -9,21 +9,40 @@ import { RippleLink } from "@/components/ui/ripple-link"
 /** Product app — self-serve door (distinct from Partner sales). */
 const NERP_APP = "https://nerp-shell.vercel.app"
 
+const PROMISES = [
+  {
+    title: "One home for the business",
+    body: "Invoices, bills, boards, and tools live under one login — so you stop hopping between five apps that don’t talk.",
+  },
+  {
+    title: "Plain verbs, not jargon",
+    body: "Make an invoice. Track a bill. Move a card. If your grandmother can’t follow the next step, we haven’t shipped it.",
+  },
+  {
+    title: "Boopy keeps you moving",
+    body: "A Disney-cute watch-blob with a serious job: celebrate wins, point at what’s next, and never shout ERP-speak at you.",
+  },
+  {
+    title: "Built for how PH shops work",
+    body: "Peso-first money, real business days, and workflows that fit owner-operators — not a finance department of twenty.",
+  },
+]
+
 const APPS = [
   {
     name: "Docmaker",
     tag: "Get paid",
-    blurb: "Invoices and receipts in plain language — so asking for money doesn’t feel scary.",
+    blurb: "Beautiful invoices and receipts in plain language — ask for money without the fear.",
   },
   {
     name: "Boopy",
     tag: "Stay on top",
-    blurb: "Bills and subscriptions with a cute watch-blob who nudges you before things go late.",
+    blurb: "Bills and subscriptions with a mascot who nudges you before anything goes late.",
   },
   {
     name: "Noard",
     tag: "Stay organised",
-    blurb: "A friendly board for work-in-progress — not another enterprise project dungeon.",
+    blurb: "A friendly board for work-in-progress — clear columns, calm cards, zero project-jargon fog.",
   },
   {
     name: "Connecty",
@@ -33,9 +52,9 @@ const APPS = [
 ]
 
 const STEPS = [
-  { n: "01", title: "Open NERP", body: "Sign in once. Your business home is waiting." },
-  { n: "02", title: "Pick one job", body: "Make an invoice, track a bill, or park a to-do. Boopy points the way." },
-  { n: "03", title: "Feel lighter", body: "Complex stays under the hood. You only see the next clear step." },
+  { n: "01", title: "Open NERP", body: "Sign in once. Your business home is waiting — warm, clear, ready." },
+  { n: "02", title: "Do one real job", body: "Make an invoice, track a bill, or park a to-do. Boopy points the way." },
+  { n: "03", title: "Feel the lift", body: "Complex stays under the hood. You only see the next clear step." },
 ]
 
 function BoopyMark({ size = 88 }: { size?: number }) {
@@ -103,17 +122,18 @@ export default function NerpPage() {
             <div className="reveal nerp-hero-copy">
               <div className="section-label">NERP · by Naaxtech</div>
               <h1 className="nerp-hero-title">
-                Business software that feels{" "}
-                <span className="accent">easy — even the hard parts.</span>
+                Run your business like it’s{" "}
+                <span className="accent">supposed to feel — easy.</span>
               </h1>
               <p className="nerp-hero-sub">
-                Rillet builds ERP for accountants closing the books. NERP is for
-                owners running the shop — fun, simple, and guided by{" "}
-                <strong>Boopy</strong>, the watch-blob with a big job.
+                NERP is the friendly ERP shell for Philippine owners: get paid,
+                stay on top of bills, organise work, and keep moving — with{" "}
+                <strong>Boopy</strong>, the watch-blob who makes the hard parts
+                simple.
               </p>
               <div className="nerp-hero-actions">
                 <RippleLink href={NERP_APP} className="btn-primary">
-                  Open NERP →
+                  Start free in NERP →
                 </RippleLink>
                 <Link href="#how" className="btn-ghost">
                   <span>See how it works</span>
@@ -121,7 +141,7 @@ export default function NerpPage() {
                 </Link>
               </div>
               <p className="nerp-hero-note">
-                Self-serve. No demo theatre. Built for Philippine micro-businesses.
+                Open the app. Finish one real job today. No sales call required.
               </p>
             </div>
             <div className="reveal nerp-hero-stage" aria-hidden>
@@ -136,34 +156,22 @@ export default function NerpPage() {
           </div>
         </section>
 
-        {/* Contrast */}
+        {/* Promises — outcome-led, no competitor framing */}
         <section className="nerp-contrast">
           <div className="section-inner reveal">
-            <div className="section-label">Why NERP exists</div>
+            <div className="section-label">What you get</div>
             <h2 className="nerp-h2">
-              Enterprise ERP makes experts faster.
+              Software that works as hard as you do —
               <br />
-              <span className="accent">We make the work feel human.</span>
+              <span className="accent">without making you feel small.</span>
             </h2>
-            <div className="nerp-contrast-grid">
-              <article className="nerp-contrast-card">
-                <h3>Them</h3>
-                <ul>
-                  <li>Built for controllers &amp; close teams</li>
-                  <li>“Request a demo” as the front door</li>
-                  <li>GAAP, agents, multi-entity depth</li>
-                  <li>Cold authority, cinematic dark UI</li>
-                </ul>
-              </article>
-              <article className="nerp-contrast-card nerp-contrast-card--us">
-                <h3>NERP</h3>
-                <ul>
-                  <li>Built for owners &amp; family helpers</li>
-                  <li>Open the app and do one job today</li>
-                  <li>Invoices, bills, boards — plain verbs</li>
-                  <li>Warm violet, Boopy, grandmother-clear</li>
-                </ul>
-              </article>
+            <div className="nerp-promises-grid">
+              {PROMISES.map((p) => (
+                <article key={p.title} className="nerp-promise-card">
+                  <h3>{p.title}</h3>
+                  <p>{p.body}</p>
+                </article>
+              ))}
             </div>
           </div>
         </section>
@@ -193,7 +201,7 @@ export default function NerpPage() {
         <section className="nerp-how" id="how">
           <div className="section-inner reveal">
             <div className="section-label">How it feels</div>
-            <h2 className="nerp-h2">Three steps. No jargon wall.</h2>
+            <h2 className="nerp-h2">Three steps. Zero intimidation.</h2>
             <ol className="nerp-steps">
               {STEPS.map((s) => (
                 <li key={s.n}>
@@ -215,13 +223,14 @@ export default function NerpPage() {
             <div>
               <div className="section-label">Meet Boopy</div>
               <h2 className="nerp-h2">
-                A Disney-cute watch-blob with a{" "}
-                <span className="accent">serious job.</span>
+                Cute on purpose.
+                <br />
+                <span className="accent">Serious about your business.</span>
               </h2>
               <p>
-                Boopy is NERP’s guide — not a chatbot gimmick. She celebrates wins,
-                points at the next useful action, and keeps complex systems from
-                shouting at you. If a grandmother can follow it, we shipped it.
+                Boopy is NERP’s guide — a Disney-cute watch-blob who celebrates
+                wins, points at the next useful action, and keeps complex systems
+                from shouting. If someone you love can follow it, we shipped it.
               </p>
             </div>
           </div>
@@ -232,21 +241,25 @@ export default function NerpPage() {
           <div className="cta-bg-text" aria-hidden="true">
             SIMPLE
           </div>
-          <div className="section-inner" style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
+          <div
+            className="section-inner"
+            style={{ textAlign: "center", position: "relative", zIndex: 1 }}
+          >
             <div className="reveal">
-              <div className="cta-label">Ready to try?</div>
+              <div className="cta-label">Your next move</div>
               <h2 className="cta-headline">
                 <TextScramble
                   text="Make business feel easy."
                   textClassName="cta-headline"
+                  bare
                 />
               </h2>
               <p className="cta-sub">
-                Open NERP, say hi to Boopy, and finish one real job today.
+                Open NERP, say hi to Boopy, and finish one real job before lunch.
               </p>
               <div className="cta-actions">
                 <RippleLink href={NERP_APP} className="btn-primary">
-                  Open NERP
+                  Start free in NERP
                 </RippleLink>
                 <Link href="/partner/" className="btn-ghost">
                   <span>Need a custom build instead?</span>

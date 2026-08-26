@@ -1411,7 +1411,7 @@ body { transition: background-color 0.2s ease, color 0.2s ease; }
 [data-theme="light"] .lab-tabs button.on   { background: #F5C842 !important; }
 
 /* ------------------------------------------
-   NERP PRODUCT PAGE — /nerp
+   NERP PRODUCT PAGE /nerp
 ------------------------------------------ */
 .nerp-page { padding-top: 64px; }
 .nerp-hero { padding: 96px 0 80px; position: relative; z-index: 1; }
@@ -1529,4 +1529,19 @@ body { transition: background-color 0.2s ease, color 0.2s ease; }
   .nerp-hero { padding: 72px 0 56px; }
   .nerp-contrast, .nerp-apps, .nerp-how, .nerp-boopy { padding: 72px 0; }
   .nerp-steps li { grid-template-columns: 56px 1fr; }
+}
+
+.nerp-promises-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+}
+.nerp-promise-card {
+  border: 1px solid var(--border); background: var(--card); padding: 28px 24px;
+}
+.nerp-promise-card h3 {
+  font-family: var(--font-display); font-weight: 800; text-transform: uppercase;
+  font-size: 18px; margin: 0 0 10px; letter-spacing: -0.01em;
+}
+.nerp-promise-card p { margin: 0; color: var(--gray); font-size: 15px; line-height: 1.6; }
+@media (max-width: 900px) {
+  .nerp-promises-grid { grid-template-columns: 1fr; }
 }
