@@ -1,0 +1,284 @@
+"use client"
+
+import { useEffect } from "react"
+import Link from "next/link"
+import { Nav } from "@/components/nav"
+import { TextScramble } from "@/components/ui/text-scramble"
+import { RippleLink } from "@/components/ui/ripple-link"
+
+/** Product app — self-serve door (distinct from Partner sales). */
+const NERP_APP = "https://nerp-shell.vercel.app"
+
+const APPS = [
+  {
+    name: "Docmaker",
+    tag: "Get paid",
+    blurb: "Invoices and receipts in plain language — so asking for money doesn’t feel scary.",
+  },
+  {
+    name: "Boopy",
+    tag: "Stay on top",
+    blurb: "Bills and subscriptions with a cute watch-blob who nudges you before things go late.",
+  },
+  {
+    name: "Noard",
+    tag: "Stay organised",
+    blurb: "A friendly board for work-in-progress — not another enterprise project dungeon.",
+  },
+  {
+    name: "Connecty",
+    tag: "Coming tools",
+    blurb: "Tell us which tools you actually use. We queue them honestly — no fake “Connected” badges.",
+  },
+]
+
+const STEPS = [
+  { n: "01", title: "Open NERP", body: "Sign in once. Your business home is waiting." },
+  { n: "02", title: "Pick one job", body: "Make an invoice, track a bill, or park a to-do. Boopy points the way." },
+  { n: "03", title: "Feel lighter", body: "Complex stays under the hood. You only see the next clear step." },
+]
+
+function BoopyMark({ size = 88 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 88 88"
+      aria-hidden
+      className="nerp-boopy-mark"
+    >
+      <defs>
+        <radialGradient id="boopyBlob" cx="35%" cy="30%" r="70%">
+          <stop offset="0%" stopColor="#f7c8e8" />
+          <stop offset="55%" stopColor="#f063b8" />
+          <stop offset="100%" stopColor="#c6137f" />
+        </radialGradient>
+      </defs>
+      <ellipse cx="44" cy="48" rx="30" ry="26" fill="url(#boopyBlob)" />
+      <ellipse cx="44" cy="22" rx="14" ry="8" fill="#2a2438" />
+      <rect x="30" y="18" width="28" height="10" rx="5" fill="#1e1b2e" />
+      <circle cx="34" cy="20" r="2.2" fill="#8e73ff" />
+      <circle cx="44" cy="20" r="2.2" fill="#ffe066" />
+      <circle cx="54" cy="20" r="2.2" fill="#12b76a" />
+      <circle cx="34" cy="46" r="4.5" fill="#1e1b2e" />
+      <circle cx="54" cy="46" r="4.5" fill="#1e1b2e" />
+      <circle cx="35.5" cy="44.5" r="1.4" fill="#fff" />
+      <circle cx="55.5" cy="44.5" r="1.4" fill="#fff" />
+      <path
+        d="M36 56c3.5 4 12.5 4 16 0"
+        fill="none"
+        stroke="#1e1b2e"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
+
+export default function NerpPage() {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((el) => {
+          if (el.isIntersecting) {
+            el.target.classList.add("visible")
+            observer.unobserve(el.target)
+          }
+        })
+      },
+      { threshold: 0.12 }
+    )
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <>
+      <Nav />
+
+      <main className="nerp-page">
+        {/* Hero */}
+        <section className="nerp-hero">
+          <div className="section-inner nerp-hero-inner">
+            <div className="reveal nerp-hero-copy">
+              <div className="section-label">NERP · by Naaxtech</div>
+              <h1 className="nerp-hero-title">
+                Business software that feels{" "}
+                <span className="accent">easy — even the hard parts.</span>
+              </h1>
+              <p className="nerp-hero-sub">
+                Rillet builds ERP for accountants closing the books. NERP is for
+                owners running the shop — fun, simple, and guided by{" "}
+                <strong>Boopy</strong>, the watch-blob with a big job.
+              </p>
+              <div className="nerp-hero-actions">
+                <RippleLink href={NERP_APP} className="btn-primary">
+                  Open NERP →
+                </RippleLink>
+                <Link href="#how" className="btn-ghost">
+                  <span>See how it works</span>
+                  <span className="arrow" />
+                </Link>
+              </div>
+              <p className="nerp-hero-note">
+                Self-serve. No demo theatre. Built for Philippine micro-businesses.
+              </p>
+            </div>
+            <div className="reveal nerp-hero-stage" aria-hidden>
+              <div className="nerp-stage-card">
+                <BoopyMark size={120} />
+                <p className="nerp-stage-quote">
+                  “One thing at a time — what should we do next?”
+                </p>
+                <span className="nerp-stage-by">— Boopy</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Contrast */}
+        <section className="nerp-contrast">
+          <div className="section-inner reveal">
+            <div className="section-label">Why NERP exists</div>
+            <h2 className="nerp-h2">
+              Enterprise ERP makes experts faster.
+              <br />
+              <span className="accent">We make the work feel human.</span>
+            </h2>
+            <div className="nerp-contrast-grid">
+              <article className="nerp-contrast-card">
+                <h3>Them</h3>
+                <ul>
+                  <li>Built for controllers &amp; close teams</li>
+                  <li>“Request a demo” as the front door</li>
+                  <li>GAAP, agents, multi-entity depth</li>
+                  <li>Cold authority, cinematic dark UI</li>
+                </ul>
+              </article>
+              <article className="nerp-contrast-card nerp-contrast-card--us">
+                <h3>NERP</h3>
+                <ul>
+                  <li>Built for owners &amp; family helpers</li>
+                  <li>Open the app and do one job today</li>
+                  <li>Invoices, bills, boards — plain verbs</li>
+                  <li>Warm violet, Boopy, grandmother-clear</li>
+                </ul>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* Apps */}
+        <section className="nerp-apps" id="apps">
+          <div className="section-inner">
+            <div className="reveal">
+              <div className="section-label">Inside the shell</div>
+              <h2 className="nerp-h2">
+                One home. Apps that mount when you need them.
+              </h2>
+            </div>
+            <div className="nerp-apps-grid">
+              {APPS.map((app) => (
+                <article key={app.name} className="reveal nerp-app-card">
+                  <span className="nerp-app-tag">{app.tag}</span>
+                  <h3>{app.name}</h3>
+                  <p>{app.blurb}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* How */}
+        <section className="nerp-how" id="how">
+          <div className="section-inner reveal">
+            <div className="section-label">How it feels</div>
+            <h2 className="nerp-h2">Three steps. No jargon wall.</h2>
+            <ol className="nerp-steps">
+              {STEPS.map((s) => (
+                <li key={s.n}>
+                  <span className="nerp-step-n">{s.n}</span>
+                  <div>
+                    <h3>{s.title}</h3>
+                    <p>{s.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        {/* Boopy */}
+        <section className="nerp-boopy">
+          <div className="section-inner nerp-boopy-inner reveal">
+            <BoopyMark size={96} />
+            <div>
+              <div className="section-label">Meet Boopy</div>
+              <h2 className="nerp-h2">
+                A Disney-cute watch-blob with a{" "}
+                <span className="accent">serious job.</span>
+              </h2>
+              <p>
+                Boopy is NERP’s guide — not a chatbot gimmick. She celebrates wins,
+                points at the next useful action, and keeps complex systems from
+                shouting at you. If a grandmother can follow it, we shipped it.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section id="cta" className="nerp-cta">
+          <div className="cta-bg-text" aria-hidden="true">
+            SIMPLE
+          </div>
+          <div className="section-inner" style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
+            <div className="reveal">
+              <div className="cta-label">Ready to try?</div>
+              <h2 className="cta-headline">
+                <TextScramble
+                  text="Make business feel easy."
+                  textClassName="cta-headline"
+                />
+              </h2>
+              <p className="cta-sub">
+                Open NERP, say hi to Boopy, and finish one real job today.
+              </p>
+              <div className="cta-actions">
+                <RippleLink href={NERP_APP} className="btn-primary">
+                  Open NERP
+                </RippleLink>
+                <Link href="/partner/" className="btn-ghost">
+                  <span>Need a custom build instead?</span>
+                  <span className="arrow" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <Link href="/" className="footer-logo">
+          <span className="naax">NAAX</span>
+          <span className="tech">TECH</span>
+        </Link>
+        <span className="footer-copy">© 2026 Naaxtech. Operations · Revenue · Growth.</span>
+        <ul className="footer-links">
+          <li>
+            <Link href="/nerp/">NERP</Link>
+          </li>
+          <li>
+            <Link href="/#solution">Services</Link>
+          </li>
+          <li>
+            <Link href="/partner/">Partner With Us</Link>
+          </li>
+          <li>
+            <a href="mailto:hello@naaxtech.com">Contact</a>
+          </li>
+        </ul>
+      </footer>
+    </>
+  )
+}

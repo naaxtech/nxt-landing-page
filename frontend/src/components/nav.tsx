@@ -43,6 +43,14 @@ export function Nav() {
             </li>
           ))}
           <li>
+            <Link href="/nerp/">
+              <TextScramble
+                text="NERP"
+                textClassName="font-mono text-[13px] tracking-[0.1em] uppercase"
+              />
+            </Link>
+          </li>
+          <li>
             <Link href="/lab/">
               <TextScramble
                 text="THE LAB"
@@ -69,6 +77,7 @@ export function Nav() {
             <Link href={link.href} onClick={close}>{link.label}</Link>
           </li>
         ))}
+        <li><Link href="/nerp/" onClick={close}>NERP</Link></li>
         <li><Link href="/lab/" onClick={close}>The Lab</Link></li>
         <li><Link href="/partner/" className="nav-mobile-cta" onClick={close}>Partner With Us</Link></li>
         <li>
