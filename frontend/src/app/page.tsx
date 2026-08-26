@@ -240,6 +240,24 @@ export default function Home() {
         </div>
       </section>
 
+      {/* NERP PRODUCT TEASER */}
+      <section id="nerp-teaser">
+        <div className="section-inner">
+          <div className="lab-teaser-inner reveal">
+            <div className="section-label">Product</div>
+            <h2 className="lab-teaser-headline">
+              Meet NERP<br />
+              <span className="accent">business that feels easy.</span>
+            </h2>
+            <p className="lab-teaser-sub">
+              Our own ERP shell — guided by Boopy, the watch-blob with a big job.
+              Self-serve for owners who want invoices, bills, and boards without the jargon.
+            </p>
+            <Link href="/nerp/" className="btn-primary">Explore NERP →</Link>
+          </div>
+        </div>
+      </section>
+
       {/* LAB TEASER */}
       <section id="lab-teaser">
         <div className="section-inner">
