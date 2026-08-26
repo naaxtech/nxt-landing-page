@@ -1,0 +1,20 @@
+frontend/src/app/nerp/page.tsx
+  s_4638d2b97f4e0d::t_075df8330d406c 3-4,6
+  s_4638d2b97f4e0d::t_438f49555d182c 1,7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "78a2d231a60cc7f729c941dd09673d88694db0db",
+  "prompts": {},
+  "sessions": {
+    "s_4638d2b97f4e0d": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "bc6fc726-e8aa-433e-af58-70e4d310e7ec",
+        "model": "default"
+      },
+      "human_author": "Naaxtech <naaxtech.official@gmail.com>"
+    }
+  }
+}
