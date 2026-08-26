@@ -1,0 +1,21 @@
+frontend/src/app/nerp/page.tsx
+  s_4638d2b97f4e0d::t_9ca5b2c7182d6f 12-30,35,40,45,55-57,125-126,129-132,136,144,159,162,164,166,168-174,204,226-228,231-233,244-247,249,254,258,262
+frontend/src/app/globals.css
+  s_4638d2b97f4e0d::t_569f1a34cc079d 1414,1533-1547
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "11426ac464d7570de51e1d5ff25353589029ef30",
+  "prompts": {},
+  "sessions": {
+    "s_4638d2b97f4e0d": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "bc6fc726-e8aa-433e-af58-70e4d310e7ec",
+        "model": "default"
+      },
+      "human_author": "Naaxtech <naaxtech.official@gmail.com>"
+    }
+  }
+}
